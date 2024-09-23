@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   param.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emencova <emencova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yfontene <yfontene@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 17:23:23 by emencova          #+#    #+#             */
-/*   Updated: 2024/09/10 16:39:38 by emencova         ###   ########.fr       */
+/*   Updated: 2024/09/23 06:51:43 by yfontene         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
 
-int check_file_permissions(char *path, int is_write) 
+/*int check_file_permissions(char *path, int is_write) 
 {
     if (access(path, F_OK) == -1) 
     {
@@ -36,7 +36,37 @@ int check_file_permissions(char *path, int is_write)
         }
     }
     return (0);
+}*/
+
+int check_file_permissions(char *path, int is_write) 
+{
+    if (access(path, F_OK) == -1) 
+    {
+        if (!is_write) 
+        {
+            m_error(ERR_NEWDIR, path, 127);
+            return (-1);
+        }
+    } 
+    else 
+    {
+        if (!is_write) 
+        {
+            if (!is_write && access(path, R_OK | X_OK) == -1) 
+            {
+                m_error(ERR_NWPERM, path, 126);
+                return (-1);
+            }
+        }
+        if (is_write && access(path, W_OK) == -1) 
+        {
+            m_error(ERR_NWPERM, path, 126);
+            return (-1);
+        }
+    }
+    return (0);
 }
+
 
 int open_file(char *path, int is_write, int is_append) 
 {

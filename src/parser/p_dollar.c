@@ -6,7 +6,7 @@
 /*   By: yfontene <yfontene@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 15:21:10 by yfontene          #+#    #+#             */
-/*   Updated: 2024/09/22 09:01:57 by yfontene         ###   ########.fr       */
+/*   Updated: 2024/09/23 08:47:57 by yfontene         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,10 +135,21 @@ char *dollar_config(char *str, int pos)
 
     if (str[pos] == '$')
     {
-        expanded_value = find_env_value(str, pos);
-        return (expanded_value);
+        if (pos == 0 || str[pos - 1] != '\\')
+        { 
+            if (isalnum(str[pos + 1]) || str[pos + 1] == '_'|| ft_isalpha(str[pos + 1]))
+            {
+                expanded_value = find_env_value(str, pos);
+                return (expanded_value);
+            }
+            else
+                return ft_strdup("$");
+        }
+        else
+            return ft_strdup("$");
     }
-    return (ft_strdup(str));
+
+    return ft_strdup(str);
 }
 
 

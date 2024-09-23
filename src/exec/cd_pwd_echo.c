@@ -6,7 +6,7 @@
 /*   By: yfontene <yfontene@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 15:15:09 by emencova          #+#    #+#             */
-/*   Updated: 2024/09/21 14:31:37 by yfontene         ###   ########.fr       */
+/*   Updated: 2024/09/23 08:26:54 by yfontene         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,51 +75,76 @@ int	m_cd(t_shell *shell)
     return (g_env.exit_status);
 }*/
 
-int m_cd(t_shell *shell) {
+int m_cd(t_shell *shell)
+{
     char **str;
     char *target_dir;
     char *current_dir;
-    char cwd_buffer[PATH_MAX];
-
 
     g_env.exit_status = 0;
     str = ((t_exec *)shell->cmds->content)->args;
-    if (!str[1] || ft_strcmp(str[1], "") == 0)
-    {
-		
 
-        target_dir = get_env("HOME", shell->keys, 4);
-        if (!target_dir || ft_strcmp(target_dir, "") == 0)
-        {
-            fprintf(stderr, "Erro: Variável de ambiente HOME não está definida\n");
-            target_dir = "/";
-        }
-		printf("Tentando mudar para o diretório: %s\n", target_dir);
-    } 
-    else
+    // If "cd" has no arguments, go to HOME
+    if (!str[1] || ft_strcmp(str[1], "") == 0)
 	{
-		target_dir = str[1];
-	} 
+        target_dir = get_env("HOME", shell->keys, 4);
+        if (!target_dir)
+		{
+            fprintf(stderr, "minishell: cd: HOME not set\n");
+            g_env.exit_status = 1;
+            return g_env.exit_status;
+        }
+    } 
+    // Case "cd -" to go to the previous directory (OLDPWD)
+    else if (ft_strcmp(str[1], "-") == 0)
+	{
+        target_dir = get_env("OLDPWD", shell->keys, 6);
+        if (!target_dir)
+		{
+            fprintf(stderr, "minishell: cd: OLDPWD not set\n");
+            g_env.exit_status = 1;
+            return g_env.exit_status;
+        }
+        printf("%s\n", target_dir);// Show the path of the previous directory
+	}
+    else
+        target_dir = str[1]; // Directory passed as argument
+
+    // checks if the directory exists and is accessible
+    if (access(target_dir, R_OK | X_OK) == -1)
+	{
+        perror("cd");
+        g_env.exit_status = 1;
+        return g_env.exit_status;
+    }
+
+    // Saves current directory to OLDPWD before switching
+    current_dir = getcwd(NULL, 0);
+    shell->keys = set_env("OLDPWD", current_dir, shell->keys, 6);
+    free(current_dir);
+
+    // Change to the destination directory
     if (chdir(target_dir) == -1)
-    {
+	{
+        perror("cd");
+        g_env.exit_status = 1;
+        return g_env.exit_status;
+    }
+
+    // Update PWD with new directory
+    current_dir = getcwd(NULL, 0);
+    if (current_dir)
+	{
+        shell->keys = set_env("PWD", current_dir, shell->keys, 3);
+        free(current_dir);
+    }
+	else
+	{
         perror("cd");
         g_env.exit_status = 1;
     }
-    else
-    {
-        current_dir = getcwd(cwd_buffer, sizeof(cwd_buffer));
-        if (current_dir)
-        {
-            shell->keys = set_env("PWD", current_dir, shell->keys, 3);
-        }
-        else
-        {
-            perror("getcwd");
-            g_env.exit_status = 1;
-        }
-    }
 
-    return (g_env.exit_status);
+    return g_env.exit_status;
 }
 
 
@@ -221,7 +246,7 @@ int	m_echo(char **args)
 }*/
 
 //function changed to not print -n and not skip line
-int m_echo(char **args)
+/*int m_echo(char **args)
 {
     int i;
     int no_newline;
@@ -239,6 +264,34 @@ int m_echo(char **args)
         i++;
         if (args[i])
             ft_putchar_fd(' ', STDOUT_FILENO);
+    }
+    if (!no_newline) {
+        ft_putchar_fd('\n', STDOUT_FILENO);
+    }
+    return 0;
+}*/
+
+int m_echo(char **args) {
+    int i;
+    int no_newline;
+    char *expanded_value;
+
+    i = 1;
+    no_newline = 0;
+    if (args[i] && strcmp(args[i], "-n") == 0) {
+        no_newline = 1;
+        i++;
+    }
+    while (args[i]) {
+        expanded_value = dollar_config(args[i], 0);
+        if (ft_strlen(expanded_value) > 0) {
+            ft_putstr_fd(expanded_value, STDOUT_FILENO);
+        }
+        free(expanded_value);
+        i++;
+        if (args[i]) {
+            ft_putchar_fd(' ', STDOUT_FILENO);
+        }
     }
     if (!no_newline) {
         ft_putchar_fd('\n', STDOUT_FILENO);

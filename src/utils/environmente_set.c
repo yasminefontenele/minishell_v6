@@ -6,7 +6,7 @@
 /*   By: yfontene <yfontene@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 19:24:57 by yasmine           #+#    #+#             */
-/*   Updated: 2024/09/04 08:50:27 by yfontene         ###   ########.fr       */
+/*   Updated: 2024/09/23 12:54:02 by yfontene         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ char **update_or_add_env_var(char *variable, char *value)
             break;
         i++;
     }
-    free_str_array(g_env.sorted);
     if (g_env.env[i] == NULL)
         append_to_env(variable, value, i);
     else
@@ -39,6 +38,8 @@ char **update_or_add_env_var(char *variable, char *value)
 		free(tmp);
 		g_env.env[i] = new_value;
     }
-    sort_array();
+    char **sorted = dup_array(g_env.env);
+    sort_array(sorted);
+    free_str_array(sorted);
     return (g_env.env);
 }

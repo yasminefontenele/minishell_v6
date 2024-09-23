@@ -6,29 +6,31 @@
 /*   By: yfontene <yfontene@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 08:50:14 by yfontene          #+#    #+#             */
-/*   Updated: 2024/09/05 19:39:16 by yfontene         ###   ########.fr       */
+/*   Updated: 2024/09/23 12:53:34 by yfontene         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
 //This function is used to duplicate the environment
-void dup_array(void)
+char **dup_array(char **env)
 {
     int i;
+    char **sorted;
 
     i = 0;
-    while (g_env.env[i])
+    while (env[i])
         i++;
-    g_env.sorted = malloc(sizeof(char *) * (i + 1));
-    g_env.sorted[i] = NULL;
+    sorted = malloc(sizeof(char *) * (i + 1));
+    sorted[i] = NULL;
     i = -1;
-    while (g_env.env[++i])
-        g_env.sorted[i] = ft_strdup(g_env.env[i]);
+    while (env[++i])
+        sorted[i] = ft_strdup(env[i]);
+    return sorted;
 }
 
 //This function is used to sort the environment
-void sort_array(void)
+void sort_array(char **sorted)
 {
     int    i;
     int    r;
@@ -36,21 +38,20 @@ void sort_array(void)
 
     tmp = NULL;
     r = 1;
-    dup_array();
     while(r)
     {
         i = -1;
         r = 0;
-        while (g_env.sorted[++i])//sort the environment variables
+        while (sorted[++i])
         {
-            if (g_env.sorted[i] && g_env.sorted[i + 1] &&
-                ft_strncmp(g_env.sorted[i],g_env.sorted[i + 1],
-                max_of(ft_strlen(g_env.sorted[i]),
-                ft_strlen(g_env.sorted[i + 1]))) > 0)
+            if (sorted[i] && sorted[i + 1] &&
+                ft_strncmp(sorted[i],sorted[i + 1],
+                max_of(ft_strlen(sorted[i]),
+                ft_strlen(sorted[i + 1]))) > 0)
             {
-                tmp = g_env.sorted[i];
-                g_env.sorted[i] = g_env.sorted[i + 1];
-                g_env.sorted[i + 1] = tmp;
+                tmp = sorted[i];
+                sorted[i] = sorted[i + 1];
+                sorted[i + 1] = tmp;
                 r = 1;
             }
         }
@@ -61,10 +62,11 @@ void sort_array(void)
 void env_init(char **env)
 {
     int i;
-    
+    char **sorted_env;
+
     i = 0;
-    g_env.exit_status = 0;//initialize the exit status
-    while(env[i])//count the number of environment variables
+    g_env.exit_status = 0;
+    while(env[i])
         i++;
     g_env.env = malloc(sizeof(char *) * (i + 2));
     if (g_env.env == NULL)
@@ -78,7 +80,8 @@ void env_init(char **env)
             ft_error("malloc failed", 1);
     }
     g_env.env[i] = NULL;
-    sort_array();
+    sorted_env = dup_array(g_env.env);
+    sort_array(sorted_env);
 }
 
 //adds a new environment variable to the g_env.env array

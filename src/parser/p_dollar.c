@@ -6,24 +6,29 @@
 /*   By: yfontene <yfontene@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 15:21:10 by yfontene          #+#    #+#             */
-/*   Updated: 2024/09/23 08:47:57 by yfontene         ###   ########.fr       */
+/*   Updated: 2024/09/23 12:52:09 by yfontene         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
 //replaces the token with the corresponding value of the variable
-void    dollar_replace(char **token, int i)
+void dollar_replace(char **token, int i)
 {
     char *str;
+    char **sorted_env;
     
     str = ft_strdup(*token);
     free(*token);
     *token = NULL;
-    *token = find_env_value(str, i);
+    sorted_env = dup_array(g_env.env);
+    sort_array(sorted_env);
+    *token = find_env_value(str, i, sorted_env);
     if (*token == NULL)
         ft_error("error in dollar replace value", 1);
+    free_str_array(sorted_env);
 }
+
 
 char    **dollar_spaces_split(char **old, int i)
 {
@@ -132,14 +137,18 @@ int	dollar_aux_config(t_tokens *token, int *i, t_data *data)
 char *dollar_config(char *str, int pos)
 {
     char *expanded_value;
+    char **sorted_env;
 
     if (str[pos] == '$')
     {
         if (pos == 0 || str[pos - 1] != '\\')
         { 
-            if (isalnum(str[pos + 1]) || str[pos + 1] == '_'|| ft_isalpha(str[pos + 1]))
+            if (isalnum(str[pos + 1]) || str[pos + 1] == '_' || ft_isalpha(str[pos + 1]))
             {
-                expanded_value = find_env_value(str, pos);
+                sorted_env = dup_array(g_env.env);
+                sort_array(sorted_env);
+                expanded_value = find_env_value(str, pos, sorted_env);
+                free_str_array(sorted_env);
                 return (expanded_value);
             }
             else
@@ -151,6 +160,7 @@ char *dollar_config(char *str, int pos)
 
     return ft_strdup(str);
 }
+
 
 
 

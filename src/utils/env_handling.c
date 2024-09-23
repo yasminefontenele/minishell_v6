@@ -6,7 +6,7 @@
 /*   By: yfontene <yfontene@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 21:06:17 by yasmine           #+#    #+#             */
-/*   Updated: 2024/09/07 10:58:14 by yfontene         ###   ########.fr       */
+/*   Updated: 2024/09/23 15:50:45 by yfontene         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ void env_update(char *env, char *new_value)
 {
     int i;
     size_t len;
-    
+    char **sorted_env;
+
     len = ft_strlen(env);
     i = -1;
     while (g_env.env[++i])
@@ -26,19 +27,23 @@ void env_update(char *env, char *new_value)
         if (ft_strncmp(env, g_env.env[i], len) == 0)
         {
             replace_value(i, new_value, len, g_env.env);
-            break ;
+            break;
         }
     }
+    sorted_env = dup_array(g_env.env);
+    sort_array(sorted_env);
     i = -1;
-    while (g_env.sorted[++i])
+    while (sorted_env[++i])
     {
-        if (ft_strncmp(env, g_env.sorted[i], len) == 0)
+        if (ft_strncmp(env, sorted_env[i], len) == 0)
         {
-            replace_value(i, new_value, len, g_env.sorted);
-            break ;
+            replace_value(i, new_value, len, sorted_env);
+            break;
         }
     }
+    free_str_array(sorted_env);
 }
+
 
 //replaces the environment variable string,
 //preserving the name and changing only the value.

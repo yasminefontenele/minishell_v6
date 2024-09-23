@@ -6,7 +6,7 @@
 /*   By: yfontene <yfontene@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/14 19:48:13 by yasmine           #+#    #+#             */
-/*   Updated: 2024/09/22 08:02:48 by yfontene         ###   ########.fr       */
+/*   Updated: 2024/09/23 15:49:09 by yfontene         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,6 @@ typedef struct s_env
 	int					exit_status;
 }						t_env;
 
-
-
 typedef struct s_tokens
 {
 	int					nbr;
@@ -82,7 +80,6 @@ typedef struct s_tokens
 	int					*type;//categorizar o token (ex.:CMD, ARG, ...)
 	char				**tokens;
 }						t_tokens;
-
 
 typedef struct s_separator
 {
@@ -146,8 +143,8 @@ void		update_env(char *var, char *value);
 void		append_to_env(char *variable, char *value, int size);
 char    	*set_dollar(char *str, int i);
 int     	len_dollar(char *str, int i);
-void    	dup_array(void);
-void    	sort_array(void);
+char		**dup_array(char **env);
+void		sort_array(char **sorted);
 void    	env_init(char **env);
 int     	count_backslash(char *line, int i);
 int			valid_backslash(char **tokens);
@@ -181,10 +178,11 @@ char 		**join_args(char **args, int *token_class);
 char 		**arg_add(char *arg, char **arr);
 void		print_invalid_identifier_error(char **args);
 int			is_invalid_identifier(char *arg);
+char		**update_or_add_env_var(char *variable, char *value);
 
 //PARSING
 t_quote		quote_init(void);
-char    	*find_env_value(char *str, int i);
+char		*find_env_value(char *str, int i, char **sorted);
 void    	process_pipeline(char *line);
 void    	process_command_line(char *line);
 void    	dollar_replace(char **token, int i);

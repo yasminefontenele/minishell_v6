@@ -6,7 +6,7 @@
 /*   By: yfontene <yfontene@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 08:50:14 by yfontene          #+#    #+#             */
-/*   Updated: 2024/09/23 16:09:05 by yfontene         ###   ########.fr       */
+/*   Updated: 2024/09/23 19:00:34 by yfontene         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,30 @@ void sort_array(char **sorted)
 }
 
 //This function is used to initialize the environment
+/*void env_init(char **env, t_shell *shell)
+{
+    int i;
+    char **sorted_env;
+
+    i = 0;
+    while(env[i])
+        i++;
+    shell->keys = malloc(sizeof(char *) * (i + 2));
+    if (shell->keys == NULL)
+        ft_error("malloc failed", 1);
+    i = -1;
+    shell->keys[++i] = ft_strdup("?=0");
+    while (env[++i])
+    {
+        shell->keys[i] = ft_strdup(env[i - 1]);
+        if (shell->keys[i] == NULL)
+            ft_error("malloc failed", 1);
+    }
+    shell->keys[i] = NULL;
+    sorted_env = dup_array(shell->keys);
+    sort_array(sorted_env);
+}*/
+
 void env_init(char **env, t_shell *shell)
 {
     int i;
@@ -83,6 +107,7 @@ void env_init(char **env, t_shell *shell)
     sorted_env = dup_array(shell->keys);
     sort_array(sorted_env);
 }
+
 
 
 //adds a new environment variable to the g_env.env array

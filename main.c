@@ -6,7 +6,7 @@
 /*   By: yfontene <yfontene@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 17:01:48 by emencova          #+#    #+#             */
-/*   Updated: 2024/09/23 16:42:28 by yfontene         ###   ########.fr       */
+/*   Updated: 2024/09/23 18:58:38 by yfontene         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,16 @@ static t_shell	prompt_init(char **av, char **env)
 	return (shell);
 }
 
+/*void print_env(char **env)
+{
+    int i = 0;
+    printf("environment variables loaded:\n");
+    while (env[i])
+    {
+        printf("%s\n", env[i]);
+        i++;
+    }
+}*/
 
 int main(int ac, char **av, char **envp)
 {
@@ -67,6 +77,7 @@ int main(int ac, char **av, char **envp)
     command_list = NULL;
     line = NULL;
 	env_init(envp, &shell);
+	//print_env(shell.keys);
     shell = prompt_init(envp, av);
     while (1)
     {

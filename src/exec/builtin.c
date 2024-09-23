@@ -6,18 +6,22 @@
 /*   By: yfontene <yfontene@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 16:20:02 by emencova          #+#    #+#             */
-/*   Updated: 2024/09/21 06:52:15 by yfontene         ###   ########.fr       */
+/*   Updated: 2024/09/23 18:23:40 by yfontene         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
-
+/*
+otimo, aparentemente está tudo ok!
+só um comando foi alterado após essas trocas e gostaria que vc me axiliasse com isso.
+no comando echo quando eu coloco juntamente com uma variavel ele não esta expandindo, por exemplo:
+*/
 int handle_basic_builtins(t_shell *shell, char **args)
 {
     if (!ft_strncmp(args[0], "pwd", 3))
         return (m_pwd());
     else if (!ft_strncmp(args[0], "echo", 4))
-		return (m_echo(args)); //ft_strlen(*args)));
+		return (m_echo(args, shell));
 	else if (!ft_strncmp(args[0], "unset", 5))
 		return (m_unset(shell));
     return (-1); 

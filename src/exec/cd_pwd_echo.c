@@ -6,7 +6,7 @@
 /*   By: yfontene <yfontene@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 15:15:09 by emencova          #+#    #+#             */
-/*   Updated: 2024/09/23 16:31:12 by yfontene         ###   ########.fr       */
+/*   Updated: 2024/09/23 18:35:20 by yfontene         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -279,11 +279,13 @@ int m_echo(char **args, t_shell *shell)
 
     i = 1;
     no_newline = 0;
-    if (args[i] && strcmp(args[i], "-n") == 0) {
+    if (args[i] && ft_strcmp(args[i], "-n") == 0)
+    {
         no_newline = 1;
         i++;
     }
-    while (args[i]) {
+    while (args[i])
+    {
         expanded_value = dollar_config(args[i], 0, shell);
         if (ft_strlen(expanded_value) > 0) {
             ft_putstr_fd(expanded_value, STDOUT_FILENO);

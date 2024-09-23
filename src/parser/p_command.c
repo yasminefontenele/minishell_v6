@@ -6,13 +6,13 @@
 /*   By: yfontene <yfontene@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 14:25:30 by yfontene          #+#    #+#             */
-/*   Updated: 2024/09/09 22:25:59 by yfontene         ###   ########.fr       */
+/*   Updated: 2024/09/23 18:26:38 by yfontene         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void    process_pipeline(char *line)
+void    process_pipeline(char *line, t_shell *shell)
 {
     int         i;
     int         error;
@@ -35,11 +35,11 @@ void    process_pipeline(char *line)
         i++;
     }
     if (error == 0)
-        tokenize_commands(sep.content, &cmds_list);
+        tokenize_commands(sep.content, &cmds_list, shell);
     free(sep.content);
 }
 
-void	process_command_line(char *line)
+void	process_command_line(char *line, t_shell *shell)
 {
     t_separator semicolon_info;
     
@@ -51,11 +51,11 @@ void	process_command_line(char *line)
     }
     semicolon_info = position_separator(line, ';');
     if (semicolon_info.nbr_separator == 0)//if there is no semicolon, the line is processed as a pipeline
-        process_pipeline(line);
+        process_pipeline(line, shell);
     else if (semicolon_info.nbr_separator == 1)//if there is a semicolon, the line is split into two commands
     {
         semicolon_info.content = ft_split(line, '\0');
-        process_pipeline(semicolon_info.content[0]);
+        process_pipeline(semicolon_info.content[0], shell);
         free(semicolon_info.content[0]);
         semicolon_info.content[0] = NULL;
         free(semicolon_info.content);

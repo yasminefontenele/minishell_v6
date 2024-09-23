@@ -6,7 +6,7 @@
 /*   By: yfontene <yfontene@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/14 19:48:13 by yasmine           #+#    #+#             */
-/*   Updated: 2024/09/23 16:46:57 by yfontene         ###   ########.fr       */
+/*   Updated: 2024/09/23 18:27:13 by yfontene         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,8 +190,8 @@ char		**update_or_add_env_var(char *variable, char *value, t_shell *shell);
 //PARSING
 t_quote		quote_init(void);
 char		*find_env_value(char *str, int i, char **sorted);
-void    	process_pipeline(char *line);
-void    	process_command_line(char *line);
+void    	process_pipeline(char *line, t_shell *shell);
+void    	process_command_line(char *line, t_shell *shell);
 void 		dollar_replace(char **token, int i, t_shell *shell);
 char    	**dollar_spaces_split(char **old, int i);
 void    	arg_type(t_tokens *token, int oldsize, int newsize, int i);

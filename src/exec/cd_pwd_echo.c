@@ -6,7 +6,7 @@
 /*   By: yfontene <yfontene@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 15:15:09 by emencova          #+#    #+#             */
-/*   Updated: 2024/09/23 08:26:54 by yfontene         ###   ########.fr       */
+/*   Updated: 2024/09/23 16:31:12 by yfontene         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -271,7 +271,8 @@ int	m_echo(char **args)
     return 0;
 }*/
 
-int m_echo(char **args) {
+int m_echo(char **args, t_shell *shell)
+{
     int i;
     int no_newline;
     char *expanded_value;
@@ -283,7 +284,7 @@ int m_echo(char **args) {
         i++;
     }
     while (args[i]) {
-        expanded_value = dollar_config(args[i], 0);
+        expanded_value = dollar_config(args[i], 0, shell);
         if (ft_strlen(expanded_value) > 0) {
             ft_putstr_fd(expanded_value, STDOUT_FILENO);
         }

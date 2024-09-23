@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eliskam <eliskam@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yfontene <yfontene@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 14:57:57 by emencova          #+#    #+#             */
-/*   Updated: 2024/09/21 09:54:54 by eliskam          ###   ########.fr       */
+/*   Updated: 2024/09/23 16:31:33 by yfontene         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,6 @@
 # include "../../minishell.h"
 
 
-typedef struct s_shell
-{
-	t_list	*cmds; // linked list of commands
-	char	**keys; // enviroment and keys
-	pid_t	mpid; // main process id
-}		t_shell;
 
 typedef struct s_exec
 {
@@ -62,7 +56,7 @@ int		builtin(t_shell *shell, t_list *cmd_ls, int *e_xit, int len);
 int		built_check(t_exec *cmd);
 int		m_cd(t_shell *shell);
 int		m_pwd();
-int		m_echo(char **args);//, int ac);
+int		m_echo(char **args, t_shell *shell);
 int		error_unset(char *av);
 int		m_exit(t_shell *shell, t_list *cmd, int *leave);
 int 	find_key_idx(char **keys, char *key);
@@ -76,7 +70,7 @@ int		second_strchr(char *str, int c);
 int		second_atoi(const char *str, long *n);
 int		ft_isspace(const char c);
 int		form_len(char **str);
-int handle_basic_builtins(t_shell *shell, char **args);
+int 	handle_basic_builtins(t_shell *shell, char **args);
 void	free_form(char ***str);
 void	m_perror(const char *msg, const char *detail, int exit_code);
 void 	run_capture_output(char ***output, char *command_path, char *command_args, char **envp);

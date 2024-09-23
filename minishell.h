@@ -6,7 +6,7 @@
 /*   By: yfontene <yfontene@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/14 19:48:13 by yasmine           #+#    #+#             */
-/*   Updated: 2024/09/23 15:49:09 by yfontene         ###   ########.fr       */
+/*   Updated: 2024/09/23 16:46:57 by yfontene         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,11 +117,18 @@ typedef struct s_execution
 }						t_execution;
 */
 
+typedef struct s_shell
+{
+	t_list	*cmds; // linked list of commands
+	char	**keys; // enviroment and keys
+	pid_t	mpid; // main process id
+}		t_shell;
 typedef struct s_data
 {
 	int					oldlen;
 	int					newlen;
 	int					presence;
+	t_shell 			*shell;
 }						t_data;
 
 //UTILS
@@ -138,14 +145,14 @@ char    	*ft_stringjoin(char *str, char c);
 char		*extract_substring(char const *s, unsigned int start, size_t len);
 void		join_backslash(char **path);
 char		*format_var(char *var, char *value);
-void		new_var(char *var, char *value);
-void		update_env(char *var, char *value);
-void		append_to_env(char *variable, char *value, int size);
-char    	*set_dollar(char *str, int i);
+void 		new_var(char *var, char *value, t_shell *shell);
+void		update_env(char *var, char *value, t_shell *shell);
+void 		append_to_env(char *variable, char *value, int size, t_shell *shell);
+char		*set_dollar(char *str, int i, t_shell *shell);
 int     	len_dollar(char *str, int i);
 char		**dup_array(char **env);
 void		sort_array(char **sorted);
-void    	env_init(char **env);
+void 		env_init(char **env, t_shell *shell);
 int     	count_backslash(char *line, int i);
 int			valid_backslash(char **tokens);
 void		free_tokens(t_tokens token);
@@ -170,7 +177,7 @@ int 		is_protected(int type);
 int 		is_cmd(int type);
 int 		is_arg(int type);
 int 		is_redirection(int type);
-void 		env_update(char *env, char *new_value);
+void 		env_update(char *env, char *new_value, t_shell *shell);
 void 		replace_value(int i, char *new_value, int len, char **arr);
 char		*assemble_argument(char **args, int *token_class, int i);
 int 		get_next_positive(char **args, int *token_class, int i);
@@ -178,26 +185,26 @@ char 		**join_args(char **args, int *token_class);
 char 		**arg_add(char *arg, char **arr);
 void		print_invalid_identifier_error(char **args);
 int			is_invalid_identifier(char *arg);
-char		**update_or_add_env_var(char *variable, char *value);
+char		**update_or_add_env_var(char *variable, char *value, t_shell *shell);
 
 //PARSING
 t_quote		quote_init(void);
 char		*find_env_value(char *str, int i, char **sorted);
 void    	process_pipeline(char *line);
 void    	process_command_line(char *line);
-void    	dollar_replace(char **token, int i);
+void 		dollar_replace(char **token, int i, t_shell *shell);
 char    	**dollar_spaces_split(char **old, int i);
 void    	arg_type(t_tokens *token, int oldsize, int newsize, int i);
 int			dollar_aux_config(t_tokens *token, int *i, t_data *data);
-char 		*dollar_config(char *str, int pos);
+char 		*dollar_config(char *str, int pos, t_shell *shell);
 int 		dollar_presence(char *str);
-char		*process_quotes(char *str);
-char		*quotes_expand(char *content, int i);
-t_tokens	process_quotes_tokens(t_tokens tokens);
-void		exec_process_quotes(t_tokens *tokens);//FINISH!!
+char		*process_quotes(char *str, t_shell *shell);
+char		*quotes_expand(char *content, int i, t_shell *shell);
+t_tokens	process_quotes_tokens(t_tokens tokens, t_shell *shell);
+void		exec_process_quotes(t_tokens *tokens, t_shell *shell);
 void		type_of_separator(int *type_of, char **token);
-void		filler_stokens(char **cmds, t_tokens **token, int nbr);
-void		tokenize_commands(char **cmds,t_list **command_list);
+void		filler_stokens(char **cmds, t_tokens **token, int nbr, t_shell *shell);
+void		tokenize_commands(char **cmds,t_list **command_list, t_shell *shell);
 int			token_dollar_end(char *str, int i);
 int			token_word_end(char *str, int i);
 int			token_quotes_end(char *str, int i);

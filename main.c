@@ -6,7 +6,7 @@
 /*   By: yfontene <yfontene@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 17:01:48 by emencova          #+#    #+#             */
-/*   Updated: 2024/09/22 07:53:53 by yfontene         ###   ########.fr       */
+/*   Updated: 2024/09/23 16:42:28 by yfontene         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int main(int ac, char **av, char **envp)
     (void)ac;
     command_list = NULL;
     line = NULL;
-	env_init(envp);
+	env_init(envp, &shell);
     shell = prompt_init(envp, av);
     while (1)
     {
@@ -81,7 +81,7 @@ int main(int ac, char **av, char **envp)
         if (*line)
         {
             add_history(line);
-            tokenize_commands(&line, &command_list);
+            tokenize_commands(&line, &command_list, &shell);
         }  
         shell.cmds = command_list;
         cmd_execute(&shell, shell.cmds);

@@ -6,14 +6,15 @@
 /*   By: yfontene <yfontene@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 15:21:10 by yfontene          #+#    #+#             */
-/*   Updated: 2024/09/23 12:52:09 by yfontene         ###   ########.fr       */
+/*   Updated: 2024/09/23 16:13:53 by yfontene         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+#include "../exec/execute.h"
 
 //replaces the token with the corresponding value of the variable
-void dollar_replace(char **token, int i)
+void dollar_replace(char **token, int i, t_shell *shell)
 {
     char *str;
     char **sorted_env;
@@ -21,13 +22,14 @@ void dollar_replace(char **token, int i)
     str = ft_strdup(*token);
     free(*token);
     *token = NULL;
-    sorted_env = dup_array(g_env.env);
+    sorted_env = dup_array(shell->keys);
     sort_array(sorted_env);
     *token = find_env_value(str, i, sorted_env);
     if (*token == NULL)
         ft_error("error in dollar replace value", 1);
     free_str_array(sorted_env);
 }
+
 
 
 char    **dollar_spaces_split(char **old, int i)
@@ -92,7 +94,7 @@ int	dollar_aux_config(t_tokens *token, int *i, t_data *data)
 {
 	if ((token->tokens[*i][1] == '$' && *i) || (*i == 0 && token->tokens[*i][0] == '$'))
 	{
-		dollar_replace(&(token->tokens[*i]), *i);
+		dollar_replace(&(token->tokens[*i]), *i, data->shell);
 		token->tokens = dollar_spaces_split(token->tokens, *i);
 		data->presence = 1;
 		data->newlen = count(token->tokens);
@@ -134,7 +136,7 @@ int	dollar_aux_config(t_tokens *token, int *i, t_data *data)
     return (*token);
 }*/
 
-char *dollar_config(char *str, int pos)
+char *dollar_config(char *str, int pos, t_shell *shell)
 {
     char *expanded_value;
     char **sorted_env;
@@ -145,7 +147,7 @@ char *dollar_config(char *str, int pos)
         { 
             if (isalnum(str[pos + 1]) || str[pos + 1] == '_' || ft_isalpha(str[pos + 1]))
             {
-                sorted_env = dup_array(g_env.env);
+                sorted_env = dup_array(shell->keys);
                 sort_array(sorted_env);
                 expanded_value = find_env_value(str, pos, sorted_env);
                 free_str_array(sorted_env);
@@ -160,6 +162,7 @@ char *dollar_config(char *str, int pos)
 
     return ft_strdup(str);
 }
+
 
 
 

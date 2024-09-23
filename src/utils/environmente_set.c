@@ -6,13 +6,14 @@
 /*   By: yfontene <yfontene@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 19:24:57 by yasmine           #+#    #+#             */
-/*   Updated: 2024/09/23 12:54:02 by yfontene         ###   ########.fr       */
+/*   Updated: 2024/09/23 16:09:12 by yfontene         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+#include "../exec/execute.h"
 
-char **update_or_add_env_var(char *variable, char *value)
+char **update_or_add_env_var(char *variable, char *value, t_shell *shell)
 {
     int i;
     int len;
@@ -21,25 +22,26 @@ char **update_or_add_env_var(char *variable, char *value)
 
     i = 0;
     len = ft_strlen(variable);
-    while(g_env.env[i])
+    while(shell->keys[i])
     {
-        if (ft_strncmp(g_env.env[i], variable, len - 1) == 0
-            && g_env.env[i][len] == '=')
+        if (ft_strncmp(shell->keys[i], variable, len - 1) == 0
+            && shell->keys[i][len] == '=')
             break;
         i++;
     }
-    if (g_env.env[i] == NULL)
-        append_to_env(variable, value, i);
+    if (shell->keys[i] == NULL)
+        append_to_env(variable, value, i, shell);
     else
     {
-        free(g_env.env[i]);
+        free(shell->keys[i]);
         tmp = ft_strjoin(variable, "=");
 		new_value = ft_strjoin(tmp, value);
 		free(tmp);
-		g_env.env[i] = new_value;
+		shell->keys[i] = new_value;
     }
-    char **sorted = dup_array(g_env.env);
+    char **sorted = dup_array(shell->keys);
     sort_array(sorted);
     free_str_array(sorted);
-    return (g_env.env);
+    return (shell->keys);
 }
+

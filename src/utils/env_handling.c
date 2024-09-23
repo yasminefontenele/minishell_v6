@@ -6,15 +6,16 @@
 /*   By: yfontene <yfontene@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 21:06:17 by yasmine           #+#    #+#             */
-/*   Updated: 2024/09/23 15:50:45 by yfontene         ###   ########.fr       */
+/*   Updated: 2024/09/23 16:08:59 by yfontene         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+#include "../exec/execute.h"
 
 //searches for the environment variable by name and when it finds it,
 //updates its value.
-void env_update(char *env, char *new_value)
+void env_update(char *env, char *new_value, t_shell *shell)
 {
     int i;
     size_t len;
@@ -22,15 +23,15 @@ void env_update(char *env, char *new_value)
 
     len = ft_strlen(env);
     i = -1;
-    while (g_env.env[++i])
+    while (shell->keys[++i])
     {
-        if (ft_strncmp(env, g_env.env[i], len) == 0)
+        if (ft_strncmp(env, shell->keys[i], len) == 0)
         {
-            replace_value(i, new_value, len, g_env.env);
+            replace_value(i, new_value, len, shell->keys);
             break;
         }
     }
-    sorted_env = dup_array(g_env.env);
+    sorted_env = dup_array(shell->keys);
     sort_array(sorted_env);
     i = -1;
     while (sorted_env[++i])
@@ -43,6 +44,7 @@ void env_update(char *env, char *new_value)
     }
     free_str_array(sorted_env);
 }
+
 
 
 //replaces the environment variable string,

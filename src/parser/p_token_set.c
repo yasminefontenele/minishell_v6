@@ -6,7 +6,7 @@
 /*   By: yfontene <yfontene@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 11:47:09 by yfontene          #+#    #+#             */
-/*   Updated: 2024/09/22 08:59:17 by yfontene         ###   ########.fr       */
+/*   Updated: 2024/09/23 16:38:21 by yfontene         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void		type_of_separator(int *type_of, char **token)
     
 }*/
 
-void filler_stokens(char **cmds, t_tokens **token, int nbr)
+void filler_stokens(char **cmds, t_tokens **token, int nbr, t_shell *shell)
 {
     int i, j;
 
@@ -60,7 +60,7 @@ void filler_stokens(char **cmds, t_tokens **token, int nbr)
     while ((*token)[i].tokens[j])
     {
         if ((*token)[i].tokens[j][0] == '$')
-            (*token)[i].tokens[j] = dollar_config((*token)[i].tokens[j], 0);
+            (*token)[i].tokens[j] = dollar_config((*token)[i].tokens[j], 0, shell);
         j++;
     }
 
@@ -69,7 +69,7 @@ void filler_stokens(char **cmds, t_tokens **token, int nbr)
 
 
 
-void tokenize_commands(char **cmdstr, t_list **commands_list)
+void tokenize_commands(char **cmdstr, t_list **commands_list, t_shell *shell)
 {
     int         i;
     int         backslash;
@@ -88,13 +88,13 @@ void tokenize_commands(char **cmdstr, t_list **commands_list)
     token = malloc(sizeof(t_tokens) * i);
     if (!token)
         ft_error("Malloc failed in tokenize_commands\n", 1); 
-    filler_stokens(cmdstr, &token, i);
+    filler_stokens(cmdstr, &token, i, shell);
 
     backslash = valid_backslash(cmdstr);
     if (backslash == 0)
         ft_error("Invalid backslash\n", 1);
     if (syntax_grammar(cmdstr, token) == 1)
-        exec_process_quotes(token);
+        exec_process_quotes(token, shell);
     exec_node = malloc(sizeof(t_exec));
     if (!exec_node)
         ft_error("Malloc failed for exec_node", 1);

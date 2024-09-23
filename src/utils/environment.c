@@ -6,11 +6,12 @@
 /*   By: yfontene <yfontene@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 08:50:14 by yfontene          #+#    #+#             */
-/*   Updated: 2024/09/23 12:53:34 by yfontene         ###   ########.fr       */
+/*   Updated: 2024/09/23 16:09:05 by yfontene         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+#include "../exec/execute.h"
 
 //This function is used to duplicate the environment
 char **dup_array(char **env)
@@ -59,33 +60,33 @@ void sort_array(char **sorted)
 }
 
 //This function is used to initialize the environment
-void env_init(char **env)
+void env_init(char **env, t_shell *shell)
 {
     int i;
     char **sorted_env;
 
     i = 0;
-    g_env.exit_status = 0;
     while(env[i])
         i++;
-    g_env.env = malloc(sizeof(char *) * (i + 2));
-    if (g_env.env == NULL)
+    shell->keys = malloc(sizeof(char *) * (i + 2));
+    if (shell->keys == NULL)
         ft_error("malloc failed", 1);
     i = -1;
-    g_env.env[++i] = ft_strdup("?=0");
+    shell->keys[++i] = ft_strdup("?=0");
     while (env[++i])
     {
-        g_env.env[i] = ft_strdup(env[i - 1]);
-        if (g_env.env[i] == NULL)
+        shell->keys[i] = ft_strdup(env[i - 1]);
+        if (shell->keys[i] == NULL)
             ft_error("malloc failed", 1);
     }
-    g_env.env[i] = NULL;
-    sorted_env = dup_array(g_env.env);
+    shell->keys[i] = NULL;
+    sorted_env = dup_array(shell->keys);
     sort_array(sorted_env);
 }
 
+
 //adds a new environment variable to the g_env.env array
-void append_to_env(char *variable, char *value, int size)
+void append_to_env(char *variable, char *value, int size, t_shell *shell)
 {
     int i;
     char	**updated_env;
@@ -96,9 +97,9 @@ void append_to_env(char *variable, char *value, int size)
     updated_env = malloc(sizeof(char *) * (size + 2));
     if (!updated_env)
         ft_error("malloc failed in append_to_env", 1);
-    while (g_env.env[i])
+    while (shell->keys[i])
     {
-        updated_env[i] = ft_strdup(g_env.env[i]);
+        updated_env[i] = ft_strdup(shell->keys[i]);
         i++;
     }
     temp_str = ft_strjoin(variable, "=");
@@ -107,6 +108,6 @@ void append_to_env(char *variable, char *value, int size)
     temp_str = NULL;
     updated_env[i++] = new_env_var;
     updated_env[i] = NULL;
-    free_str_array(g_env.env);
-    g_env.env = updated_env;
+    free_str_array(shell->keys);
+    shell->keys = updated_env;
 }

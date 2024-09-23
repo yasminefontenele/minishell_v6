@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emencova <emencova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yfontene <yfontene@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 15:16:06 by emencova          #+#    #+#             */
-/*   Updated: 2024/09/10 16:31:29 by emencova         ###   ########.fr       */
+/*   Updated: 2024/09/23 09:01:08 by yfontene         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ char	**set_env(char *str, char *val, char **keys, int nbr)
 	keys = extend_form(keys, new_entry);
 	return (keys);
 }
-
+// this function is used to get the value of an environment variable
 char	*get_env(char *name, char **env, int name_len)
 {
 	int	i;

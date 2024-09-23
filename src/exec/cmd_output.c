@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_output.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eliskam <eliskam@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yfontene <yfontene@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 20:24:02 by emencova          #+#    #+#             */
-/*   Updated: 2024/09/19 23:34:56 by eliskam          ###   ########.fr       */
+/*   Updated: 2024/09/23 09:20:08 by yfontene         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
+
 
 static void	store_cmd_output(char ***output, int fd)
 {

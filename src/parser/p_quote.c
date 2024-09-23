@@ -6,7 +6,7 @@
 /*   By: yfontene <yfontene@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 08:59:10 by yfontene          #+#    #+#             */
-/*   Updated: 2024/09/09 22:26:21 by yfontene         ###   ########.fr       */
+/*   Updated: 2024/09/23 09:55:27 by yfontene         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,13 @@ char *quotes_expand(char *content, int i)
     tmp = ft_substr(content, i + 1, ft_strlen(content) - i - 2);
     nbr_of_dollars = dollar_presence(tmp);
     if (content[i] == '\"' && nbr_of_dollars != 0)
+    {
         tmp = process_quotes(tmp);
-    return (tmp);
+    }
+
+    return tmp;
 }
+
 
 /*
 Iterates over the tokens (parts of the command separated by spaces or
@@ -79,18 +83,18 @@ t_tokens process_quotes_tokens(t_tokens tokens)
     while (tokens.tokens[i])
     {
         j = 0;
-        if(i != 0)
-            j++;
+        // Verifica se o token tem aspas no começo
         if (tokens.tokens[i][j] == '\'' || tokens.tokens[i][j] == '\"')
         {
             tmp_token = tokens.tokens[i];
-            tokens.tokens[i] = quotes_expand(tokens.tokens[i], i);
+            tokens.tokens[i] = quotes_expand(tokens.tokens[i], j);
             free(tmp_token);
         }
         i++;
     }
     return (tokens);
 }
+
 
 /*
 ensures that each part of the command correctly processes variables and
@@ -104,6 +108,11 @@ void exec_process_quotes(t_tokens *tokens)
     while (i < tokens[0].pipe)
     {
         tokens[i] = process_quotes_tokens(tokens[i]);
+        int j = 0;
+        while (tokens[i].tokens[j])
+        {
+            j++;
+        }
         i++;
     }
     //execution(tokens);   ********** TO DO **********

@@ -6,7 +6,7 @@
 /*   By: eliskam <eliskam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 17:25:13 by emencova          #+#    #+#             */
-/*   Updated: 2024/09/24 13:16:38 by eliskam          ###   ########.fr       */
+/*   Updated: 2024/09/24 13:51:05 by eliskam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int create_here_document_fd(char *input_buffer[2], char *delimiter[2])
 void parse_redir(t_exec *exec, char **args)
 {
     int i;
-    int fd;
+   // int fd;
 
     i = 0;
     while (args[i])
@@ -89,6 +89,7 @@ void parse_redir(t_exec *exec, char **args)
         {
             exec = infile_two(exec, args, &i);
         }
+        /*
         else
         {
             fd = open_fd(exec->in, args[i], 0, 0);
@@ -96,7 +97,7 @@ void parse_redir(t_exec *exec, char **args)
                 fprintf(stderr, "Error opening file: %s\n", args[i]);
             else 
                 close(fd);
-        }
+        }*/
         i++;
     }
 

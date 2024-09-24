@@ -6,7 +6,7 @@
 /*   By: eliskam <eliskam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 16:34:30 by emencova          #+#    #+#             */
-/*   Updated: 2024/09/24 13:38:50 by eliskam          ###   ########.fr       */
+/*   Updated: 2024/09/24 13:49:59 by eliskam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,13 +74,15 @@ static DIR	*check_cmd(t_shell *shell, t_list *comnd, char ***str)
 	return (directory);
 }
 
-void command_get(t_shell *shell, t_list *comnd) {
+void command_get(t_shell *shell, t_list *comnd)
+{
     t_exec *node;
     DIR *directory;
     char **str;
 
     str = NULL;
     node = comnd->content;
+   // printf("inside builtin\n");
     if (built_check(node))
     {
         builtin(shell, comnd, &g_env.exit_status, ft_strlen(node->args[0]));
@@ -130,7 +132,6 @@ void cmd_execute(t_shell *shell, t_list *commands_list)
             next_cmd = (t_exec *)cmd_node->next->content;
         else
             next_cmd = NULL;
-
         command_get(shell, cmd_node);
 
         if (next_cmd)

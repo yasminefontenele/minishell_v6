@@ -6,7 +6,7 @@
 /*   By: eliskam <eliskam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 14:57:57 by emencova          #+#    #+#             */
-/*   Updated: 2024/09/24 13:36:08 by eliskam          ###   ########.fr       */
+/*   Updated: 2024/09/24 13:44:53 by eliskam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,10 +81,6 @@ void 	error_cd(char **s[2]);
 void	ft_free(void *content);
 void	handle_process(t_shell *shell, t_list *cmd, int fd[2]);
 int 	check_fork(t_shell *shell, t_list *cmd, int fd[2]);
-void 	*prepare_exec(t_shell *shell, t_list *cmd, int fd[2]);
-void 	close_old_fd(int oldfd);
-t_exec 	*get_outfile(t_exec *node, char **args, int *i, int append);
-t_exec 	*get_infile(t_exec *node, char **args, int *i, int here_doc);
 char	**dupl_form(char **f);
 char	**replace_form(char **big, char **small, int nbr);
 char	**extend_form(char **insd, char *nstr);

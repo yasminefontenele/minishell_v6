@@ -56,7 +56,7 @@ int		builtin(t_shell *shell, t_list *cmd_ls, int *e_xit, int len);
 int		built_check(t_exec *cmd);
 int		m_cd(t_shell *shell);
 int		m_pwd();
-int		m_echo(char **args, t_shell *shell);
+int		m_echo(char **args);
 int		error_unset(char *av);
 int		m_exit(t_shell *shell, t_list *cmd, int *leave);
 int 	find_key_idx(char **keys, char *key);

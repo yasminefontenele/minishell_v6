@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yfontene <yfontene@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: eliskam <eliskam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 17:01:48 by emencova          #+#    #+#             */
-/*   Updated: 2024/09/23 18:58:38 by yfontene         ###   ########.fr       */
+/*   Updated: 2024/09/24 12:51:45 by eliskam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "./src/exec/execute.h"
 
 t_env   g_env;
-
+/*
 static t_shell	var_init(t_shell shell, char *s, char **av)
 {
 	char	*nbr;
@@ -55,18 +55,7 @@ static t_shell	prompt_init(char **av, char **env)
 	shell = var_init(shell, s, av);
 	return (shell);
 }
-
-/*void print_env(char **env)
-{
-    int i = 0;
-    printf("environment variables loaded:\n");
-    while (env[i])
-    {
-        printf("%s\n", env[i]);
-        i++;
-    }
-}*/
-
+*/
 int main(int ac, char **av, char **envp)
 {
     t_shell shell;
@@ -74,11 +63,15 @@ int main(int ac, char **av, char **envp)
     t_list  *command_list;
 	
     (void)ac;
+	(void)av;
+	
     command_list = NULL;
     line = NULL;
 	env_init(envp, &shell);
-	//print_env(shell.keys);
-    shell = prompt_init(envp, av);
+   // shell = prompt_init(envp, av);
+//	char *test_var = get_env("HOME", shell.keys, 4);
+//	printf("HOME in main function after var init is : %s\n", test_var ? test_var : "not found");
+//	free(test_var);
     while (1)
     {
         signal(SIGINT, sigint_handler);

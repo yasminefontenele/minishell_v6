@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_pwd_echo.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yfontene <yfontene@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: eliskam <eliskam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 15:15:09 by emencova          #+#    #+#             */
-/*   Updated: 2024/09/23 18:35:20 by yfontene         ###   ########.fr       */
+/*   Updated: 2024/09/24 13:35:48 by eliskam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ int	m_cd(t_shell *shell)
 	shell->keys = set_env("PWD", str[1][2], shell->keys, 3);
 	free_form(&str[1]);
 	return (g_env.exit_status);
-}*/
+}
 //ULTIMA VESAO FUNCIONAL
-/*int m_cd(t_shell *shell) {
+int m_cd(t_shell *shell) {
     char **str;
     char *target_dir;
     char *current_dir;
@@ -146,7 +146,6 @@ int m_cd(t_shell *shell)
 
     return g_env.exit_status;
 }
-
 
 int	m_pwd(void)
 {

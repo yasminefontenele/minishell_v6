@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   input_read.c                                       :+:      :+:    :+:   */
+/*   process_files.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yfontene <yfontene@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: eliskam <eliskam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 17:25:13 by emencova          #+#    #+#             */
-/*   Updated: 2024/09/23 09:22:49 by yfontene         ###   ########.fr       */
+/*   Updated: 2024/09/24 13:16:38 by eliskam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,3 +62,63 @@ int create_here_document_fd(char *input_buffer[2], char *delimiter[2])
     return (fd[PIPE_READ]);
 }
 
+
+void parse_redir(t_exec *exec, char **args)
+{
+    int i;
+    int fd;
+
+    i = 0;
+    while (args[i])
+    {
+        if (ft_strcmp(args[i], ">") == 0)
+        {
+            exec->out = open_fd(exec->out, args[i + 1], 1, 0);
+            i++;
+        }
+        else if (ft_strcmp(args[i], ">>") == 0)
+        {
+            exec->out = open_fd(exec->out, args[i + 1], 1, 1);
+            i++;
+        }
+        else if (ft_strcmp(args[i], "<") == 0)
+        {
+            exec = infile_one(exec, args, &i);
+        }
+        else if (ft_strcmp(args[i], "<<") == 0)
+        {
+            exec = infile_two(exec, args, &i);
+        }
+        else
+        {
+            fd = open_fd(exec->in, args[i], 0, 0);
+            if (fd == -1)
+                fprintf(stderr, "Error opening file: %s\n", args[i]);
+            else 
+                close(fd);
+        }
+        i++;
+    }
+
+   // printf("After parse_redir, exec in is - %d, exec out is - %d, args are - %s\n", exec->in, exec->out, args[0]);
+}
+
+
+void process_command(t_shell *shell, t_list *cmd_list)
+{	
+	t_exec *exec;
+	(void)shell;
+    
+	exec = (t_exec *)cmd_list->content;
+	exec->path = NULL;
+    exec->in = 0;
+    exec->out = 1;
+	char **args = exec->args;
+	//printf("entering process command, exec args are - %s\n ", *exec->args);
+	//printf("entering process command, char args are - %s\n ", *args);
+    parse_redir(exec, args);
+	if (exec->args[0])
+       cmd_execute(shell, cmd_list);
+	else
+		fprintf(stderr, "Error: Command not found.\n");
+}

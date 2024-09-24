@@ -6,7 +6,7 @@
 /*   By: eliskam <eliskam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 17:01:48 by emencova          #+#    #+#             */
-/*   Updated: 2024/09/24 12:51:45 by eliskam          ###   ########.fr       */
+/*   Updated: 2024/09/24 13:05:52 by eliskam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,10 @@ int main(int ac, char **av, char **envp)
 	
     (void)ac;
 	(void)av;
-	
-    command_list = NULL;
+	shell.cmds = NULL;
     line = NULL;
+	command_list = NULL;
+	m_getpid(&shell);
 	env_init(envp, &shell);
    // shell = prompt_init(envp, av);
 //	char *test_var = get_env("HOME", shell.keys, 4);
@@ -88,7 +89,9 @@ int main(int ac, char **av, char **envp)
             tokenize_commands(&line, &command_list, &shell);
         }  
         shell.cmds = command_list;
-        cmd_execute(&shell, shell.cmds);
+		if (command_list)
+			process_command(&shell, command_list);
+       // cmd_execute(&shell, shell.cmds);
 		ft_lstclear(&command_list, free);
 		command_list = NULL;
         free(line);

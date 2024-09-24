@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yfontene <yfontene@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: eliskam <eliskam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 16:20:02 by emencova          #+#    #+#             */
-/*   Updated: 2024/09/23 18:23:40 by yfontene         ###   ########.fr       */
+/*   Updated: 2024/09/24 13:35:06 by eliskam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,16 @@ int builtin(t_shell *shell, t_list *cmd_ls, int *exit, int len)
 {
     char **args;
     int builtin_result;
+	char *test_var = get_env("HOME",g_env.env, 4);
+	printf("HOME in builtin function  is : %s\n", test_var ? test_var : "not found");
+    
+    free(test_var);
+	
 
     while (cmd_ls)
     {
         args = ((t_exec *)cmd_ls->content)->args;
-        len = args ? ft_strlen(*args) : 0;
+        len = ft_strlen(*args);
         if (args && !ft_strncmp(args[0], "exit", 4) && len == 4)
             g_env.exit_status = m_exit(shell, cmd_ls, exit);
         else if (!cmd_ls->next && args && !ft_strncmp(args[0], "cd", 2) && len == 2)

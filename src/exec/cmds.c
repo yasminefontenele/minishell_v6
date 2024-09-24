@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmds.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yfontene <yfontene@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: eliskam <eliskam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 16:34:30 by emencova          #+#    #+#             */
-/*   Updated: 2024/09/21 06:35:54 by yfontene         ###   ########.fr       */
+/*   Updated: 2024/09/24 13:38:50 by eliskam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ static DIR	*check_cmd(t_shell *shell, t_list *comnd, char ***str)
 	return (directory);
 }
 
-
 void command_get(t_shell *shell, t_list *comnd) {
     t_exec *node;
     DIR *directory;
@@ -82,7 +81,8 @@ void command_get(t_shell *shell, t_list *comnd) {
 
     str = NULL;
     node = comnd->content;
-    if (built_check(node)) {
+    if (built_check(node))
+    {
         builtin(shell, comnd, &g_env.exit_status, ft_strlen(node->args[0]));
         return;
     }
@@ -120,16 +120,19 @@ void cmd_execute(t_shell *shell, t_list *commands_list)
     while (cmd_node)
     {
         current_cmd = (t_exec *)cmd_node->content;
+      //  printf("After parse_redir, exec in is - %d, exec out is - %d, path is - %s args are - %s\n", current_cmd->in, current_cmd->out,current_cmd->path, *current_cmd->args);
         if (!cmd_node || !current_cmd)
         {
-            fprintf(stderr, "Erro: cmd_node ou current_cmd está nulo em cmd_execute\n");
+            fprintf(stderr, "Error: cmd_node or current_cmd is null in cmd_execute\n");
             return;
         }
         if (cmd_node->next)
             next_cmd = (t_exec *)cmd_node->next->content;
         else
             next_cmd = NULL;
+
         command_get(shell, cmd_node);
+
         if (next_cmd)
         {
             if (pipe(fd) == -1)
@@ -146,6 +149,7 @@ void cmd_execute(t_shell *shell, t_list *commands_list)
             close(current_cmd->in);
         if (current_cmd->out > 2)
             close(current_cmd->out);
+        
         cmd_node = cmd_node->next;
     }
 }

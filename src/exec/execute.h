@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yfontene <yfontene@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: eliskam <eliskam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 14:57:57 by emencova          #+#    #+#             */
-/*   Updated: 2024/09/23 16:31:33 by yfontene         ###   ########.fr       */
+/*   Updated: 2024/09/24 13:36:08 by eliskam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,9 +91,15 @@ char	**extend_form(char **insd, char *nstr);
 char	*get_next_line(int fd);
 char	**set_env(char *str, char *val, char **keys, int nbr);
 char	*get_env(char *name, char **env, int name_len);
-char 	*read_here_document(char *input_buffer[2], size_t limit_length, char *end_marker, char *error_message);
 
 void	m_getpid(t_shell *piid);
 void	sigint_handler(int sig);
 void	ft_exec(char ***out, char *full, char *ags, char **env);
+int		open_fd(int fd, char *path, int is_output, int append);
+t_exec *outfile_one(t_exec *node, char **ags, int *len);
+t_exec *outfile_two(t_exec *node, char **ags, int *len);
+t_exec *infile_one(t_exec *node, char **ags, int *len);
+t_exec	*infile_two(t_exec *node, char **ags, int *len);
+void process_command(t_shell *shell, t_list *cmd_list);
+
 #endif

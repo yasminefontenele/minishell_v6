@@ -26,48 +26,42 @@ int dollar_presence(char *str)
     return (0);
 }
 
-char *process_quotes(char *str)
-{
-    int     i;
-    char    *content;
-    char    *tmp;
-
-    i = 0;
-    content = ft_strdup("");
-    if (str[i])
-    {
-        if (str[i] != '$')
-            content = ft_stringjoin(content, str[i]);
-        else
-        {
-            tmp = set_dollar(str, i);
-            content = ft_stringjoin(content, tmp[i]);
-            i += len_dollar(str, i) - 1;
-        }
-        i++;
-    }
-    return (content);
-}
-
-/*
-Processes content within double or single quotes,
-expanding variables as necessary.
-*/
 char *quotes_expand(char *content, int i)
 {
     int nbr_of_dollars;
     char *tmp;
 
-    tmp = ft_substr(content, i + 1, ft_strlen(content) - i - 2);
-    nbr_of_dollars = dollar_presence(tmp);
-    if (content[i] == '\"' && nbr_of_dollars != 0)
+    if (content[i] == '\"')
     {
-        tmp = process_quotes(tmp);
+        tmp = ft_substr(content, i + 1, ft_strlen(content) - i - 2);
+        nbr_of_dollars = dollar_presence(tmp);
+        if (nbr_of_dollars != 0)
+            tmp = dollar_config(tmp, 0);
+        return tmp;
     }
-
-    return tmp;
+    if (content[i] == '\'')
+        return ft_substr(content, i + 1, ft_strlen(content) - i - 2);
+    return ft_strdup(content);
 }
 
+char *process_quotes(char *str)
+{
+    int i;
+    
+    i = 0;
+    if (str[i] == '\'')
+    {
+        i++;
+        while (str[i] && str[i] != '\'')
+            i++;
+        return ft_substr(str, 1, i - 1);
+    }
+    if (str[i] == '\"')
+    {
+        return quotes_expand(str, i);
+    }
+    return ft_strdup(str);
+}
 
 /*
 Iterates over the tokens (parts of the command separated by spaces or

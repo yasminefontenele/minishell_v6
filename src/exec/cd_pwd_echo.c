@@ -271,31 +271,33 @@ int	m_echo(char **args)
     return 0;
 }*/
 
-int m_echo(char **args) {
-    int i;
-    int no_newline;
-    char *expanded_value;
+int m_echo(char **args)
+{
+    int i = 1;
+    int no_newline = 0;
+    char *processed_value;
 
-    i = 1;
-    no_newline = 0;
-    if (args[i] && strcmp(args[i], "-n") == 0) {
+    if (args[i] && strcmp(args[i], "-n") == 0)
+    {
         no_newline = 1;
         i++;
     }
-    while (args[i]) {
-        expanded_value = dollar_config(args[i], 0);
-        if (ft_strlen(expanded_value) > 0) {
-            ft_putstr_fd(expanded_value, STDOUT_FILENO);
-        }
-        free(expanded_value);
+    while (args[i])
+    {
+        processed_value = process_quotes(args[i]);
+        ft_putstr_fd(processed_value, STDOUT_FILENO);
+        free(processed_value);
+
         i++;
-        if (args[i]) {
+        if (args[i])
+        {
             ft_putchar_fd(' ', STDOUT_FILENO);
         }
     }
-    if (!no_newline) {
+    if (!no_newline)
+    {
         ft_putchar_fd('\n', STDOUT_FILENO);
     }
+
     return 0;
 }
-

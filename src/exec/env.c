@@ -6,7 +6,7 @@
 /*   By: eliskam <eliskam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 15:16:06 by emencova          #+#    #+#             */
-/*   Updated: 2024/09/25 21:06:54 by eliskam          ###   ########.fr       */
+/*   Updated: 2024/09/25 21:39:36 by eliskam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,10 @@ char	**set_env(char *str, char *val, char **keys, int nbr)
 	while (keys && keys[i])
 	{
 		key_len = second_strchr(keys[i], '=');
-	//	printf("I am in set env strncmp keys [i]- %s\n ", keys[i]);
 		if (ft_strncmp(keys[i], str, nbr) == 0 && (key_len >= nbr))
 		{
-			//printf("I am in set env strncmp keys [i]- %s\n ");
 			free(keys[i]);
 			keys[i] = new_entry;
-		//	printf("I am in set env strncmp keys [i]- %s\n ", keys[i]);
 			return (keys);
 		}
 		i++;
@@ -43,9 +40,6 @@ char	**set_env(char *str, char *val, char **keys, int nbr)
 	return (keys);
 }
 
-
-
-// this function is used to get the value of an environment variable
 char	*get_env(char *name, char **env, int name_len)
 {
 	int	i;
@@ -65,43 +59,3 @@ char	*get_env(char *name, char **env, int name_len)
 	}
 	return (NULL);
 }
-/*
-char *get_env(char *name, char **env, int name_len)
-{
-    int i;
-    int n;
-
-    i = 0;
-    if (name_len < 0)
-        name_len = ft_strlen(name);
-
-    while (env && env[i])
-    {
-        n = name_len;
-        if (n < second_strchr(env[i], '='))
-            n = second_strchr(env[i], '=');
-        if (!strncmp(env[i], name, n))
-            return (ft_substr(env[i], n + 1, ft_strlen(env[i])));
-        i++;
-    }
-    return (NULL);
-}
-
-
-char	*get_env(char *name, char **env, int name_len)
-{
-	int	i;
-	int	equal_pos;
-
-	i = 0;
-	if (name_len < 0)
-		equal_pos = ft_strlen(name);
-	while (env && env[i])
-	{
-		equal_pos = second_strchr(env[i], '=');
-		if (equal_pos > 0 && !ft_strncmp(env[i], name, name_len))
-			return (ft_substr(env[i], equal_pos + 1, ft_strlen(env[i]) - equal_pos - 1));
-		i++;
-	}
-	return (NULL);
-}*/

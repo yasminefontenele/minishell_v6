@@ -6,7 +6,7 @@
 /*   By: eliskam <eliskam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 16:34:30 by emencova          #+#    #+#             */
-/*   Updated: 2024/09/24 13:49:59 by eliskam          ###   ########.fr       */
+/*   Updated: 2024/09/25 08:40:06 by eliskam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ static DIR	*check_cmd(t_shell *shell, t_list *comnd, char ***str)
 	}
 	return (directory);
 }
-
+/*
 void command_get(t_shell *shell, t_list *comnd)
 {
     t_exec *node;
@@ -110,6 +110,54 @@ void command_get(t_shell *shell, t_list *comnd)
         m_error(ERR_NEWDIR, node->args[0], 127);
     free_form(&str);
 }
+*/
+void command_get(t_shell *shell, t_list *comnd)
+{
+    t_exec *node;
+    DIR *directory;
+    char **str;
+
+    str = NULL;
+    node = comnd->content;
+
+    // Check for built-in commands
+    if (built_check(node))
+    {
+        builtin(shell, comnd, &g_env.exit_status, ft_strlen(node->args[0]));
+        return;
+    }
+
+    // Check if it's a directory or command
+    directory = check_cmd(shell, comnd, &str);
+    if (directory) {
+        closedir(directory);
+        return;
+    }
+
+    // If the command path is not found, print the error once
+    if (!node->path || access(node->path, X_OK) != 0) {
+        // Print the error once
+        fprintf(stderr, "command not found: %s\n", node->args[0]);
+        free_form(&str);
+        return;
+    }
+
+    // Fork and execute the valid command
+    pid_t pid = fork();
+    if (pid < 0) {
+        m_error(ERR_FORK, NULL, 1);
+    }
+    else if (pid == 0) {
+        execve(node->path, node->args, shell->keys);
+        m_error(ERR_ISDIR, node->args[0], 126);  // If execve fails, exit with an error
+    }
+    else {
+        waitpid(pid, &g_env.exit_status, 0);  // Parent process waits for the child
+    }
+
+    free_form(&str);
+}
+
 
 void cmd_execute(t_shell *shell, t_list *commands_list)
 {
@@ -154,4 +202,3 @@ void cmd_execute(t_shell *shell, t_list *commands_list)
         cmd_node = cmd_node->next;
     }
 }
-

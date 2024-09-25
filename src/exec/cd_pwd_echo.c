@@ -6,7 +6,7 @@
 /*   By: eliskam <eliskam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 15:15:09 by emencova          #+#    #+#             */
-/*   Updated: 2024/09/24 13:35:48 by eliskam          ###   ########.fr       */
+/*   Updated: 2024/09/25 08:33:03 by eliskam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -270,7 +270,7 @@ int	m_echo(char **args)
     return 0;
 }*/
 
-int m_echo(char **args)
+int m_echo(char **args, t_shell *shell)
 {
     int i;
     int no_newline;
@@ -285,7 +285,7 @@ int m_echo(char **args)
     }
     while (args[i])
     {
-        processed_value = process_quotes(args[i]);
+        processed_value = process_quotes(args[i], shell);
         ft_putstr_fd(processed_value, STDOUT_FILENO);
         free(processed_value);
         i++;

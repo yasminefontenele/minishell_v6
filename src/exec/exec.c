@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yfontene <yfontene@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: eliskam <eliskam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 22:31:57 by emencova          #+#    #+#             */
-/*   Updated: 2024/09/23 09:21:54 by yfontene         ###   ########.fr       */
+/*   Updated: 2024/09/25 08:44:11 by eliskam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,21 +45,21 @@ static void	handle_redirect(t_list *cmd_node, int pipes[2])
             return;
         }
     }
-    close(pipes[PIPE_WRITE]);
+   // close(pipes[PIPE_WRITE]);
 }
 
 void	handle_process(t_shell *shell, t_list *cmd, int fd[2])
 {
-    t_exec *node;
-    int cmd_len;
+ //  t_exec *node;
+   // int cmd_len;
     
-    cmd_len = 0;
-    node = cmd->content;
-	if (node->args)
-		cmd_len = ft_strlen(*node->args);
+   // cmd_len = 0;
+   // node = cmd->content;
+	//if (node->args)
+	//	cmd_len = ft_strlen(*node->args);
 	handle_redirect(cmd, fd);
 	close(fd[PIPE_READ]);
-	builtin(shell,cmd,&g_env.exit_status,cmd_len);
+	//builtin(shell,cmd,&g_env.exit_status,cmd_len);
 	ft_lstclear(&shell->cmds, ft_free);
 	exit(g_env.exit_status);
 }

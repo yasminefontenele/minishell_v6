@@ -6,7 +6,7 @@
 /*   By: eliskam <eliskam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 17:01:48 by emencova          #+#    #+#             */
-/*   Updated: 2024/09/24 13:05:52 by eliskam          ###   ########.fr       */
+/*   Updated: 2024/09/25 08:33:57 by eliskam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,14 +65,12 @@ int main(int ac, char **av, char **envp)
     (void)ac;
 	(void)av;
 	shell.cmds = NULL;
+	shell.mpid = getpid();
     line = NULL;
 	command_list = NULL;
-	m_getpid(&shell);
+	//m_getpid(&shell);
 	env_init(envp, &shell);
    // shell = prompt_init(envp, av);
-//	char *test_var = get_env("HOME", shell.keys, 4);
-//	printf("HOME in main function after var init is : %s\n", test_var ? test_var : "not found");
-//	free(test_var);
     while (1)
     {
         signal(SIGINT, sigint_handler);

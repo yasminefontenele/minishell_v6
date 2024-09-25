@@ -9,7 +9,7 @@ void sigint_handler(int sig)
     rl_replace_line("", 0);
     rl_redisplay();
 }
-
+/*
 void	m_getpid(t_shell *piid)
 {
 	pid_t	pid;
@@ -29,3 +29,4 @@ void	m_getpid(t_shell *piid)
 	waitpid(pid, NULL, 0);
 	piid->mpid = pid - 1;
 }
+*/

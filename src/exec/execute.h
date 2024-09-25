@@ -6,7 +6,7 @@
 /*   By: eliskam <eliskam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 14:57:57 by emencova          #+#    #+#             */
-/*   Updated: 2024/09/25 17:06:36 by eliskam          ###   ########.fr       */
+/*   Updated: 2024/09/25 21:14:55 by eliskam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void 	run_capture_output(char ***output, char *command_path, char *command_args,
 void	command_get(t_shell *shell, t_list *comnd);
 void	cmd_execute(t_shell *shell, t_list *cmd);
 void 	m_error(int error_type, char *limit, int status);
-void 	error_cd(char **s[2]);
+//void 	error_cd(char **s[2]);
 void	ft_free(void *content);
 void	handle_process(t_shell *shell, t_list *cmd, int fd[2]);
 //int 	check_fork(t_shell *shell, t_list *cmd, int fd[2]);
@@ -99,5 +99,6 @@ t_exec *infile_one(t_exec *node, char **ags, int *len);
 t_exec	*infile_two(t_exec *node, char **ags, int *len);
 void process_command(t_shell *shell, t_list *cmd_list);
 void	handle_redirect(t_list *cmd_node, int pipes[2]);
+void error_cd(char **args, char *target_dir);
 
 #endif

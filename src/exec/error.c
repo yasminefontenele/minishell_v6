@@ -6,7 +6,7 @@
 /*   By: eliskam <eliskam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 16:43:00 by emencova          #+#    #+#             */
-/*   Updated: 2024/09/20 22:49:56 by eliskam          ###   ########.fr       */
+/*   Updated: 2024/09/25 21:14:23 by eliskam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,31 +41,49 @@ void m_error(int error_type, char *limit, int status)
     g_env.exit_status = status;
 }
 
-void error_cd(char **s[2])
+void error_cd(char **args, char *target_dir)
 {
     DIR *dir;
-	
-	dir = NULL;
-    if ((!s[0][1] && s[1][0] && !s[1][0][0]) || (!s[0][1] && s[1][0] && (g_env.exit_status = chdir(s[1][0]) == -1)))
+
+    if (!args[1] && (!target_dir || target_dir[0] == '\0'))
     {
         g_env.exit_status = 1;
-        ft_putstr_fd("HOME not established!\n", 2);
+        ft_putstr_fd("minishell: cd: HOME not set\n", 2);
         return;
     }
-    if (s[0][1])
+    if (args[1])
     {
-        dir = opendir(s[0][1]);
-        if (!dir && access(s[0][1], F_OK) == -1)
-            m_error(ERR_NEWDIR, s[0][1], 1);
-        else if (!dir)
-            m_error(ERR_NOTDIR, s[0][1], 1);
-        else
-		{
-            g_env.exit_status = chdir(s[0][1]) == -1;
-            closedir(dir);
-		}
+        if (access(args[1], F_OK) == -1)
+        {
+            m_error(ERR_NEWDIR, args[1], 1);
+            return;
+        }
+        dir = opendir(args[1]);
+        if (!dir)
+        {
+            if (errno == ENOTDIR)
+                m_error(ERR_NOTDIR, args[1], 1);
+            else
+                m_error(ERR_NEWDIR, args[1], 1);
+            return;
+        }
+        if (chdir(args[1]) == -1)
+        {
+            perror("cd");
+            g_env.exit_status = 1;
+        }
+        closedir(dir);
+    }
+    else if (target_dir)
+    {
+        if (chdir(target_dir) == -1)
+        {
+            perror("cd");
+            g_env.exit_status = 1;
+        }
     }
 }
+
 
 int	error_unset(char *av)
 {

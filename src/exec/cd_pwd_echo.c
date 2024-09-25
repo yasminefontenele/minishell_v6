@@ -6,11 +6,73 @@
 /*   By: eliskam <eliskam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 15:15:09 by emencova          #+#    #+#             */
-/*   Updated: 2024/09/25 08:33:03 by eliskam          ###   ########.fr       */
+/*   Updated: 2024/09/25 21:20:49 by eliskam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
+
+int m_cd(t_shell *shell)
+{
+    char    **args;
+    char    *home_dir;
+    char    *current_dir;
+    char    *target_dir;
+
+    g_env.exit_status = 0;
+    args = ((t_exec *)shell->cmds->content)->args;
+
+    // Get the HOME directory from the environment
+    home_dir = get_env("HOME", shell->keys, 4);
+    if (!home_dir)
+    {
+        ft_putstr_fd("minishell: cd: HOME not set\n", 2);
+        g_env.exit_status = 1;
+        return g_env.exit_status;
+    }
+
+    // Determine target directory
+    if (!args[1] || ft_strcmp(args[1], "") == 0)  // No argument, go to HOME
+    {
+        target_dir = ft_strdup(home_dir);
+    }
+    else if (ft_strcmp(args[1], "-") == 0)  // "cd -" go to OLDPWD
+    {
+        target_dir = get_env("OLDPWD", shell->keys, 6);
+        if (!target_dir)
+        {
+            ft_putstr_fd("minishell: cd: OLDPWD not set\n", 2);
+            g_env.exit_status = 1;
+            free(home_dir);
+            return g_env.exit_status;
+        }
+    }
+    else  // Use provided argument as target directory
+    {
+        target_dir = ft_strdup(args[1]);
+    }
+
+    // Call error_cd to handle the directory change and error checking
+    error_cd(args, target_dir);
+
+    // If no errors, update OLDPWD and PWD
+    if (!g_env.exit_status)
+    {
+        current_dir = getcwd(NULL, 0);
+        if (current_dir)
+        {
+            shell->keys = set_env("OLDPWD", current_dir, shell->keys, 6);  // Set OLDPWD
+            shell->keys = set_env("PWD", current_dir, shell->keys, 3);     // Set PWD
+            free(current_dir);
+        }
+    }
+
+    free(home_dir);
+    free(target_dir);
+    return g_env.exit_status;
+}
+
+
 /*
 int	m_cd(t_shell *shell)
 {
@@ -20,6 +82,10 @@ int	m_cd(t_shell *shell)
 
 	g_env.exit_status = 0;
 	str[0] = ((t_exec *)shell->cmds->content)->args;
+
+   // current_dir = getcwd(NULL, 1024);
+  //  printf("my directory is = %s\n ", current_dir);
+
 	home_dir = get_env("HOME", shell->keys, 4);
 	if (!home_dir)
 		home_dir = ft_strdup(" ");
@@ -28,7 +94,7 @@ int	m_cd(t_shell *shell)
 	current_dir = getcwd(NULL, 0);
 	str[1] = extend_form(str[1], current_dir);
 	free(current_dir);
-	error_cd(str);
+	error_cd(str, );
 	if (!g_env.exit_status)
 		shell->keys = set_env("OLDPWD", str[1][1], shell->keys, 6);
 	current_dir = getcwd(NULL, 0);
@@ -40,7 +106,10 @@ int	m_cd(t_shell *shell)
 	free_form(&str[1]);
 	return (g_env.exit_status);
 }
-//ULTIMA VESAO FUNCIONAL
+
+
+
+ULTIMA VESAO FUNCIONAL
 int m_cd(t_shell *shell) {
     char **str;
     char *target_dir;
@@ -73,16 +142,20 @@ int m_cd(t_shell *shell) {
     }
 
     return (g_env.exit_status);
-}*/
+}
 
 int m_cd(t_shell *shell)
 {
     char **str;
     char *target_dir;
     char *current_dir;
-
+    (void)shell;
     g_env.exit_status = 0;
     str = ((t_exec *)shell->cmds->content)->args;
+    
+    current_dir = getcwd(NULL, 1024);
+    printf("my directory is = %s\n ", current_dir);
+
 
     // If "cd" has no arguments, go to HOME
     if (!str[1] || ft_strcmp(str[1], "") == 0)
@@ -120,10 +193,14 @@ int m_cd(t_shell *shell)
 
     // Saves current directory to OLDPWD before switching
     current_dir = getcwd(NULL, 0);
+    printf("before first set env = %s\n ", current_dir);
+    
     shell->keys = set_env("OLDPWD", current_dir, shell->keys, 6);
+    printf("after first set env = %s\n ", current_dir);
+    
     free(current_dir);
 
-    // Change to the destination directory
+  // Change to the destination directory
     if (chdir(target_dir) == -1)
 	{
         perror("cd");
@@ -143,9 +220,10 @@ int m_cd(t_shell *shell)
         perror("cd");
         g_env.exit_status = 1;
     }
-
+    printf("exiting cd\n");
     return g_env.exit_status;
 }
+*/
 
 int	m_pwd(void)
 {
@@ -154,7 +232,7 @@ int	m_pwd(void)
     buffer = getcwd(NULL, 1024);  // Altere 0 para um valor padrão, como 1024
     if (!buffer)
     {
-        perror("pwd");
+        perror("pwd\n");
         return (1);
     }
     ft_putendl_fd(buffer, 1);

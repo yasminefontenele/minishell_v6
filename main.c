@@ -6,7 +6,7 @@
 /*   By: eliskam <eliskam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 17:01:48 by emencova          #+#    #+#             */
-/*   Updated: 2024/09/25 17:09:43 by eliskam          ###   ########.fr       */
+/*   Updated: 2024/09/25 17:26:33 by eliskam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int main(int ac, char **av, char **envp)
 	env_init(envp, &shell);
 	
 //	printf("Environment variables in shell.keys:\n");
-	int i;
+	//int i;
   //  for (i = 0; shell.keys && shell.keys[i]; i++)
  //   {
  //       printf("%s\n", shell.keys[i]);

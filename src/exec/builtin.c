@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yfontene <yfontene@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: eliskam <eliskam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 16:20:02 by emencova          #+#    #+#             */
-/*   Updated: 2024/09/25 16:50:11 by yfontene         ###   ########.fr       */
+/*   Updated: 2024/09/25 21:05:45 by eliskam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@ no comando echo quando eu coloco juntamente com uma variavel ele não esta expan
 int handle_basic_builtins(t_shell *shell, char **args)
 {
     if (!ft_strncmp(args[0], "pwd", 3))
-        return (m_pwd());
+        return (g_env.exit_status= m_pwd());
     else if (!ft_strncmp(args[0], "echo", 4))
-		return (m_echo(args, shell));
+		return (g_env.exit_status = m_echo(args, shell));
 	else if (!ft_strncmp(args[0], "unset", 5))
-		return (m_unset(shell));
+		return (g_env.exit_status = m_unset(shell));
     else if (!ft_strncmp(args[0], "env", 3))
-		return (m_env(shell));
+		return (g_env.exit_status = m_env(shell));
     return (-1); 
 }
 
@@ -33,23 +33,29 @@ int builtin(t_shell *shell, t_list *cmd_ls, int *exit, int len)
 {
     char **args;
     int builtin_result;
-	char *test_var = get_env("HOME",shell->keys, 4);
-//	printf("HOME in builtin function  is : %s\n", test_var ? test_var : "not found");
-    
-    free(test_var);
-	
 
+	//char *test_var = get_env("HOME",shell->keys, 4);
+//	printf("HOME in builtin function  is : %s\n", test_var ? test_var : "not found");
+  //  free(test_var);       
     while (cmd_ls)
     {
         args = ((t_exec *)cmd_ls->content)->args;
         len = ft_strlen(*args);
-	//	printf("ARGS in builtin are %s\n", *args);
         if (args && !ft_strncmp(args[0], "exit", 4) && len == 4)
+        {
             g_env.exit_status = m_exit(shell, cmd_ls, exit);
-        else if (!cmd_ls->next && args && !ft_strncmp(args[0], "cd", 2) && len == 2)
-            g_env.exit_status = m_cd(shell);
+            return (g_env.exit_status);
+        }
+        else if (*args && !ft_strncmp(args[0], "cd", 2) && len == 2)
+        {
+            g_env.exit_status = m_cd(shell); 
+            return (g_env.exit_status);
+        }
         else if (!cmd_ls->next && args && !ft_strncmp(args[0], "export", 6))
+        {
             g_env.exit_status = m_export(shell);
+            return (g_env.exit_status);
+        }
         else if (!cmd_ls->next && args && (builtin_result = handle_basic_builtins(shell,args)) != -1)
         {
             g_env.exit_status = builtin_result;
@@ -61,6 +67,7 @@ int builtin(t_shell *shell, t_list *cmd_ls, int *exit, int len)
 
         cmd_ls = cmd_ls->next;
     }
+            
     return g_env.exit_status;
 }
 

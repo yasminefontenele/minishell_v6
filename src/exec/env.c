@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yfontene <yfontene@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: eliskam <eliskam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 15:16:06 by emencova          #+#    #+#             */
-/*   Updated: 2024/09/23 09:01:08 by yfontene         ###   ########.fr       */
+/*   Updated: 2024/09/25 21:06:54 by eliskam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,13 @@ char	**set_env(char *str, char *val, char **keys, int nbr)
 	while (keys && keys[i])
 	{
 		key_len = second_strchr(keys[i], '=');
+	//	printf("I am in set env strncmp keys [i]- %s\n ", keys[i]);
 		if (ft_strncmp(keys[i], str, nbr) == 0 && (key_len >= nbr))
 		{
+			//printf("I am in set env strncmp keys [i]- %s\n ");
 			free(keys[i]);
 			keys[i] = new_entry;
+		//	printf("I am in set env strncmp keys [i]- %s\n ", keys[i]);
 			return (keys);
 		}
 		i++;
@@ -39,6 +42,9 @@ char	**set_env(char *str, char *val, char **keys, int nbr)
 	keys = extend_form(keys, new_entry);
 	return (keys);
 }
+
+
+
 // this function is used to get the value of an environment variable
 char	*get_env(char *name, char **env, int name_len)
 {

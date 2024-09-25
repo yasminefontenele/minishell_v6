@@ -6,7 +6,7 @@
 /*   By: eliskam <eliskam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 17:01:48 by emencova          #+#    #+#             */
-/*   Updated: 2024/09/25 08:33:57 by eliskam          ###   ########.fr       */
+/*   Updated: 2024/09/25 14:40:06 by eliskam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ int main(int ac, char **av, char **envp)
     char    *line;
     t_list  *command_list;
 	
+	
     (void)ac;
 	(void)av;
 	shell.cmds = NULL;
@@ -70,7 +71,15 @@ int main(int ac, char **av, char **envp)
 	command_list = NULL;
 	//m_getpid(&shell);
 	env_init(envp, &shell);
+	
+	printf("Environment variables in shell.keys:\n");
+	int i;
+    for (i = 0; shell.keys && shell.keys[i]; i++)
+    {
+        printf("%s\n", shell.keys[i]);
+    }
    // shell = prompt_init(envp, av);
+   
     while (1)
     {
         signal(SIGINT, sigint_handler);

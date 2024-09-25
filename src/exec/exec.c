@@ -6,14 +6,14 @@
 /*   By: eliskam <eliskam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 22:31:57 by emencova          #+#    #+#             */
-/*   Updated: 2024/09/25 09:01:36 by eliskam          ###   ########.fr       */
+/*   Updated: 2024/09/25 14:32:21 by eliskam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
 #include <dirent.h>
 
-/*
+
 static void	handle_redirect(t_list *cmd_node, int pipes[2])
 {
     t_exec *node;
@@ -45,7 +45,7 @@ static void	handle_redirect(t_list *cmd_node, int pipes[2])
             return;
         }
     }
-   // close(pipes[PIPE_WRITE]);
+    close(pipes[PIPE_WRITE]);
 }
 
 void	handle_process(t_shell *shell, t_list *cmd, int fd[2])
@@ -83,7 +83,7 @@ int check_fork(t_shell *shell, t_list *cmd, int fd[2])
     else
     return (1);
 }
-
+/*
 void *prepare_exec(t_shell *shell, t_list *cmd, int fd[2])
 {
 	t_exec *cmd_info;
@@ -111,7 +111,7 @@ void *prepare_exec(t_shell *shell, t_list *cmd, int fd[2])
 }
 
 
-*/
+
 
 
 static void handle_redirect(t_list *cmd_node, int pipes[2])
@@ -119,6 +119,7 @@ static void handle_redirect(t_list *cmd_node, int pipes[2])
     t_exec *node = cmd_node->content;
 
     // Redirect input
+    printf("handle redirect\n");
     if (node->in != STDIN_FILENO)
     {
         if (dup2(node->in, STDIN_FILENO) == -1)
@@ -175,9 +176,8 @@ int check_fork(t_shell *shell, t_list *cmd, int fd[2])
         return 0; // Indicate an error
     }
     else if (pid == 0) // Child process
-    {
-        handle_process(shell, cmd, fd); // Redirect and handle the command
-    }
+        handle_process(shell, cmd, fd); // Redirect and handle the comman
     // Parent process continues
     return 1; // Indicate success
 }
+*/

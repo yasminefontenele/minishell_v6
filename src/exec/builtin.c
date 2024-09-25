@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eliskam <eliskam@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yfontene <yfontene@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 16:20:02 by emencova          #+#    #+#             */
-/*   Updated: 2024/09/25 08:35:02 by eliskam          ###   ########.fr       */
+/*   Updated: 2024/09/25 16:50:11 by yfontene         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ int handle_basic_builtins(t_shell *shell, char **args)
 		return (m_echo(args, shell));
 	else if (!ft_strncmp(args[0], "unset", 5))
 		return (m_unset(shell));
+    else if (!ft_strncmp(args[0], "env", 3))
+		return (m_env(shell));
     return (-1); 
 }
 
@@ -84,6 +86,8 @@ int built_check(t_exec *cmd)
 	if (!ft_strncmp(*cmd->args, "echo", i) && i == 4)
 		return (1);
 	if (!ft_strncmp(*cmd->args, "exit", i) && i == 4)
+		return (1);
+    if (!ft_strncmp(*cmd->args, "env", i) && i == 3)
 		return (1);
 	return (0);
 }

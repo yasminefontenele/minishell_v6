@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   export_unset.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eliskam <eliskam@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yfontene <yfontene@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 15:15:49 by emencova          #+#    #+#             */
-/*   Updated: 2024/09/19 23:35:48 by eliskam          ###   ########.fr       */
+/*   Updated: 2024/09/25 16:50:52 by yfontene         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
+#include "../../minishell.h"
 
 int find_key_idx(char **keys, char *key)
 {
@@ -81,4 +82,21 @@ int	m_export(t_shell *shell)
 		i++;
 	}
 	return (0);
+}
+
+int m_env(t_shell *shell)
+{
+    int i;
+
+    i = 0;
+    if (!shell || !shell->keys)
+    {
+        ft_error("No enviroment is set", 1);
+    }
+    while (shell->keys[i])
+    {
+        printf("%s\n", shell->keys[i]);
+        i++;
+    }
+    return (0);
 }

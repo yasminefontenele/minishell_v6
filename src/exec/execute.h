@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yfontene <yfontene@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: eliskam <eliskam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 14:57:57 by emencova          #+#    #+#             */
-/*   Updated: 2024/09/25 16:51:08 by yfontene         ###   ########.fr       */
+/*   Updated: 2024/09/25 17:06:36 by eliskam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void 	m_error(int error_type, char *limit, int status);
 void 	error_cd(char **s[2]);
 void	ft_free(void *content);
 void	handle_process(t_shell *shell, t_list *cmd, int fd[2]);
-int 	check_fork(t_shell *shell, t_list *cmd, int fd[2]);
+//int 	check_fork(t_shell *shell, t_list *cmd, int fd[2]);
 char	**dupl_form(char **f);
 char	**replace_form(char **big, char **small, int nbr);
 char	**extend_form(char **insd, char *nstr);
@@ -98,5 +98,6 @@ t_exec *outfile_two(t_exec *node, char **ags, int *len);
 t_exec *infile_one(t_exec *node, char **ags, int *len);
 t_exec	*infile_two(t_exec *node, char **ags, int *len);
 void process_command(t_shell *shell, t_list *cmd_list);
+void	handle_redirect(t_list *cmd_node, int pipes[2]);
 
 #endif

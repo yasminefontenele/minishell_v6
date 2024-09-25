@@ -6,7 +6,7 @@
 /*   By: eliskam <eliskam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 16:34:30 by emencova          #+#    #+#             */
-/*   Updated: 2024/09/25 16:25:30 by eliskam          ###   ########.fr       */
+/*   Updated: 2024/09/25 17:06:04 by eliskam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,7 @@ static DIR *check_cmd(t_shell *shell, t_list *comnd, char ***str)
     DIR *directory;
     char *path_env;
     pid_t pid;
+    int pipes[2];
 
     directory = NULL;
     node = comnd->content;
@@ -150,6 +151,7 @@ static DIR *check_cmd(t_shell *shell, t_list *comnd, char ***str)
             m_error(ERR_FORK, NULL, 1);
         else if (pid == 0)
         {
+            handle_redirect(comnd, pipes);
             execve(node->path, node->args, shell->keys);
             m_error(ERR_ISDIR, node->args[0], 126);
         }

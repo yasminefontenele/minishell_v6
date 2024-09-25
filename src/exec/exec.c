@@ -6,7 +6,7 @@
 /*   By: eliskam <eliskam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 22:31:57 by emencova          #+#    #+#             */
-/*   Updated: 2024/09/25 14:32:21 by eliskam          ###   ########.fr       */
+/*   Updated: 2024/09/25 17:07:32 by eliskam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <dirent.h>
 
 
-static void	handle_redirect(t_list *cmd_node, int pipes[2])
+void	handle_redirect(t_list *cmd_node, int pipes[2])
 {
     t_exec *node;
     
@@ -47,7 +47,7 @@ static void	handle_redirect(t_list *cmd_node, int pipes[2])
     }
     close(pipes[PIPE_WRITE]);
 }
-
+/*
 void	handle_process(t_shell *shell, t_list *cmd, int fd[2])
 {
  //  t_exec *node;
@@ -83,7 +83,7 @@ int check_fork(t_shell *shell, t_list *cmd, int fd[2])
     else
     return (1);
 }
-/*
+
 void *prepare_exec(t_shell *shell, t_list *cmd, int fd[2])
 {
 	t_exec *cmd_info;

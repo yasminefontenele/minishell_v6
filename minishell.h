@@ -6,7 +6,7 @@
 /*   By: yfontene <yfontene@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/14 19:48:13 by yasmine           #+#    #+#             */
-/*   Updated: 2024/09/23 18:27:13 by yfontene         ###   ########.fr       */
+/*   Updated: 2024/09/26 21:16:56 by yfontene         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,8 +155,9 @@ void		sort_array(char **sorted);
 void 		env_init(char **env, t_shell *shell);
 int     	count_backslash(char *line, int i);
 int			valid_backslash(char **tokens);
-void		free_tokens(t_tokens token);
+void 		free_tokens(t_tokens *token);
 void		free_dollar(char **original, char **replacement);
+void		free_split(char **split);
 int			syntax_redirections(t_tokens *tokens);
 int			syntax_grammar(char **commands, t_tokens *tokens);
 int			count_separator(char *line, char separator);
@@ -204,6 +205,7 @@ t_tokens	process_quotes_tokens(t_tokens tokens, t_shell *shell);
 void		exec_process_quotes(t_tokens *tokens, t_shell *shell);
 void		type_of_separator(int *type_of, char **token);
 void		filler_stokens(char **cmds, t_tokens **token, int nbr, t_shell *shell);
+char **split_pipes(char *line);
 void		tokenize_commands(char **cmds,t_list **command_list, t_shell *shell);
 int			token_dollar_end(char *str, int i);
 int			token_word_end(char *str, int i);

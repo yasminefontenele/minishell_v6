@@ -6,25 +6,27 @@
 /*   By: yfontene <yfontene@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 11:14:59 by yasmine           #+#    #+#             */
-/*   Updated: 2024/09/05 19:38:24 by yfontene         ###   ########.fr       */
+/*   Updated: 2024/09/26 21:16:31 by yfontene         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void    free_tokens(t_tokens token)
+void free_tokens(t_tokens *token)
 {
-    int i;
+    int i = 0;
 
-    i = 0;
-    while (token.tokens[i])
+    if (!token || !token->tokens)
+        return;
+
+    while (token->tokens[i])
     {
-        free(token.tokens[i]);
-        token.tokens[i] = NULL;
+        free(token->tokens[i]);
+        token->tokens[i] = NULL;
         i++;
     }
-    //free(token.tokens);
-    token.tokens = NULL;
+    free(token->tokens);
+    token->tokens = NULL;
 }
 
 void free_dollar(char **original, char **replacement)
@@ -63,4 +65,15 @@ void    free_str_array(char **arr)
     free(arr);
 }
 
-/* falta o free_execution para liberar o t_execution*/
+void free_split(char **split)
+{
+    int i = 0;
+    
+    if (!split)
+        return;
+    while (split[i]) {
+        free(split[i]);
+        i++;
+    }
+    free(split);
+}

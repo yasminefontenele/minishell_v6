@@ -6,7 +6,7 @@
 /*   By: eliskam <eliskam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 14:57:57 by emencova          #+#    #+#             */
-/*   Updated: 2024/09/25 21:39:56 by eliskam          ###   ########.fr       */
+/*   Updated: 2024/09/26 08:41:54 by eliskam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,5 +99,7 @@ t_exec	*infile_two(t_exec *node, char **ags, int *len);
 void process_command(t_shell *shell, t_list *cmd_list);
 void	handle_redirect(t_list *cmd_node, int pipes[2]);
 void error_cd(char **args, char *target_dir);
+char *ft_strndup(char *src, int n);
+
 
 #endif

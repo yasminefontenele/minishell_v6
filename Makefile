@@ -6,7 +6,7 @@
 #    By: eliskam <eliskam@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/12 11:06:25 by yasmine           #+#    #+#              #
-#    Updated: 2024/09/24 13:00:59 by eliskam          ###   ########.fr        #
+#    Updated: 2024/09/26 08:10:59 by eliskam          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -62,14 +62,14 @@ UTILS_SRCS=				./src/utils/backslash.c\
 						./src/exec/error.c\
 						./src/exec/exec.c\
 						./src/exec/exit.c\
-						./src/exec/export_unset.c\
+						./src/exec/m_env_unset.c\
 						./src/exec/process_files.c\
 						./src/exec/get_files.c\
 						./src/exec/utils_builtin.c\
 						./src/exec/utils_form.c\
 						./src/exec/env.c\
-						./src/exec/signal_pid.c\
 						./src/exec/custom.c\
+						./src/exec/export.c\
 						
 
 SRCS=					$(UTILS_SRCS)\

@@ -6,7 +6,7 @@
 /*   By: eliskam <eliskam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 16:43:00 by emencova          #+#    #+#             */
-/*   Updated: 2024/09/25 21:14:23 by eliskam          ###   ########.fr       */
+/*   Updated: 2024/09/26 08:28:43 by eliskam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,12 +97,12 @@ void	m_perror(const char *msg, const char *detail, int exit_code)
 {
 	if (exit_code == ERR_DUP)
 	{
-		write(STDERR_FILENO, msg, strlen(msg));
+		write(STDERR_FILENO, msg, ft_strlen(msg));
 	}
 	if (detail)
 	{
 		write(STDERR_FILENO, ": ", 2);
-		write(STDERR_FILENO, detail, strlen(detail));
+		write(STDERR_FILENO, detail, ft_strlen(detail));
 	}
 	write(STDERR_FILENO, "\n", 1);
 

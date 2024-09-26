@@ -6,7 +6,7 @@
 /*   By: eliskam <eliskam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 17:01:48 by emencova          #+#    #+#             */
-/*   Updated: 2024/09/25 21:38:37 by eliskam          ###   ########.fr       */
+/*   Updated: 2024/09/26 08:11:17 by eliskam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,18 @@ static t_shell	prompt_init(char **av, char **env)
 	return (shell);
 }
 */
+
+void sigint_handler(int sig)
+{
+    (void)sig;
+
+    write(STDOUT_FILENO, "\n", 1);
+    rl_on_new_line();
+    rl_replace_line("", 0);
+    rl_redisplay();
+}
+
+
 int main(int ac, char **av, char **envp)
 {
     t_shell shell;

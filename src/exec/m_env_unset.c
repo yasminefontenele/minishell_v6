@@ -6,7 +6,7 @@
 /*   By: eliskam <eliskam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 15:15:49 by emencova          #+#    #+#             */
-/*   Updated: 2024/09/26 08:42:24 by eliskam          ###   ########.fr       */
+/*   Updated: 2024/09/26 10:41:34 by eliskam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ int m_unset(t_shell *shell)
 	i = 1;
 	av = ((t_exec *)shell->cmds->content)->args;
     if (form_len(av) < 2)
-        return 0;
+        return (0);
     while (av[i])
     {
         if (av[i][ft_strlen(av[i]) - 1] != '=')
@@ -131,12 +131,18 @@ int m_unset(t_shell *shell)
         }
         index = find_key_idx(shell->keys, av[i]);
         if (index != -1)
-            replace_form(shell->keys, NULL, index);
+        {
+            free(shell->keys[index]);
+            while (shell->keys[index])
+            {
+                shell->keys[index] = shell->keys[index + 1];
+                index++;
+            }
+        }
         i++;
     }
     return (0);
 }
-
 
 int m_env(t_shell *shell)
 {

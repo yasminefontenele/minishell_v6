@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmds.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eliskam <eliskam@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yfontene <yfontene@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 16:34:30 by emencova          #+#    #+#             */
-/*   Updated: 2024/09/25 17:06:04 by eliskam          ###   ########.fr       */
+/*   Updated: 2024/09/26 12:22:14 by yfontene         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,13 @@ static DIR *check_cmd(t_shell *shell, t_list *comnd, char ***str)
             m_error(ERR_ISDIR, node->args[0], 126);
         }
         else
-            waitpid(pid, &g_env.exit_status, 0);
+    {
+        waitpid(pid, &g_env.exit_status, 0);
+        if (WIFEXITED(g_env.exit_status))
+            g_env.exit_status = WEXITSTATUS(g_env.exit_status);
+    }
+
+
     }
     return directory;
 }

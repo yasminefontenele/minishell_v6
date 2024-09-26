@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: eliskam <eliskam@student.42.fr>            +#+  +:+       +#+         #
+#    By: yfontene <yfontene@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/12 11:06:25 by yasmine           #+#    #+#              #
-#    Updated: 2024/09/26 08:10:59 by eliskam          ###   ########.fr        #
+#    Updated: 2024/09/26 13:28:51 by yfontene         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,7 +57,7 @@ UTILS_SRCS=				./src/utils/backslash.c\
 						./src/exec/cmds.c\
 						./src/exec/get_next_line.c\
 						./src/exec/get_next_line_utils.c\
-						./src/exec/cd_pwd_echo.c\
+						./src/exec/m_cd_pwd_echo.c\
 						./src/exec/cmd_output.c\
 						./src/exec/error.c\
 						./src/exec/exec.c\
@@ -69,7 +69,7 @@ UTILS_SRCS=				./src/utils/backslash.c\
 						./src/exec/utils_form.c\
 						./src/exec/env.c\
 						./src/exec/custom.c\
-						./src/exec/export.c\
+						./src/exec/m_export_expr.c\
 						
 
 SRCS=					$(UTILS_SRCS)\

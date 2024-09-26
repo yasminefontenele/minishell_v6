@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eliskam <eliskam@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yfontene <yfontene@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 08:08:44 by emencova          #+#    #+#             */
-/*   Updated: 2024/09/26 08:43:47 by eliskam          ###   ########.fr       */
+/*   Updated: 2024/09/26 13:27:39 by yfontene         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,4 +133,37 @@ int m_export(t_shell *shell)
         i++;
     }
     return (1);
+}
+
+int m_expr(char **args)
+{
+    int num1, num2;
+    char op;
+
+    if (!args[1] || !args[2] || !args[3])
+        return 1;
+    num1 = atoi(args[1]);
+    op = args[2][0];
+    num2 = atoi(args[3]);
+    if (op == '+')
+        printf("%d\n", num1 + num2);
+    else if (op == '-')
+        printf("%d\n", num1 - num2);
+    else if (op == '*')
+        printf("%d\n", num1 * num2);
+    else if (op == '/')
+    {
+        if (num2 == 0)
+        {
+            printf("expr: divisão por zero\n");
+            return 1;
+        }
+        printf("%d\n", num1 / num2);
+    }
+    else
+    {
+        printf("expr: operador inválido\n");
+        return 1;
+    }
+    return 0;
 }

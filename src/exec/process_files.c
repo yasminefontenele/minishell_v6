@@ -6,7 +6,7 @@
 /*   By: eliskam <eliskam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 17:25:13 by emencova          #+#    #+#             */
-/*   Updated: 2024/09/24 13:51:05 by eliskam          ###   ########.fr       */
+/*   Updated: 2024/09/27 11:46:08 by eliskam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,18 +108,17 @@ void parse_redir(t_exec *exec, char **args)
 void process_command(t_shell *shell, t_list *cmd_list)
 {	
 	t_exec *exec;
+    char **args;
 	(void)shell;
     
 	exec = (t_exec *)cmd_list->content;
 	exec->path = NULL;
     exec->in = 0;
     exec->out = 1;
-	char **args = exec->args;
-	//printf("entering process command, exec args are - %s\n ", *exec->args);
-	//printf("entering process command, char args are - %s\n ", *args);
+	args = exec->args;
     parse_redir(exec, args);
 	if (exec->args[0])
        cmd_execute(shell, cmd_list);
 	else
-		fprintf(stderr, "Error: Command not found.\n");
+        write(STDERR_FILENO, "Error: Command not found.\n", 26);
 }

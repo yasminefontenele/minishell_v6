@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   p_dollar.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yfontene <yfontene@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: eliskam <eliskam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 15:21:10 by yfontene          #+#    #+#             */
-/*   Updated: 2024/09/26 13:22:21 by yfontene         ###   ########.fr       */
+/*   Updated: 2024/09/27 10:46:26 by eliskam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ int	dollar_aux_config(t_tokens *token, int *i, t_data *data)
         dollar_replace(&(token->tokens[*i]), *i, data->shell);
 	else if ((token->tokens[*i][1] == '$' && *i) || (*i == 0 && token->tokens[*i][0] == '$'))
 	{
-        printf("Chamando dollar_aux_config para token: %s\n", token->tokens[*i]);
+      //  printf("Chamando dollar_aux_config para token: %s\n", token->tokens[*i]);
 		dollar_replace(&(token->tokens[*i]), *i, data->shell);
 		token->tokens = dollar_spaces_split(token->tokens, *i);
 		data->presence = 1;
@@ -178,7 +178,7 @@ char *dollar_config(char *str, int pos, t_shell *shell)
     {
         if (str[pos + 1] == '?')
             return ft_itoa(g_env.exit_status);
-        else if (isalnum(str[pos + 1]) || str[pos + 1] == '_' || ft_isalpha(str[pos + 1]))
+        else if (ft_isalnum(str[pos + 1]) || str[pos + 1] == '_' || ft_isalpha(str[pos + 1]))
         {
             sorted_env = dup_array(shell->keys);
             sort_array(sorted_env);

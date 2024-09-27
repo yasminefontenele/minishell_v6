@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   p_token_set.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yfontene <yfontene@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: eliskam <eliskam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 11:47:09 by yfontene          #+#    #+#             */
-/*   Updated: 2024/09/26 21:15:49 by yfontene         ###   ########.fr       */
+/*   Updated: 2024/09/27 10:43:37 by eliskam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,13 @@ void filler_stokens(char **cmds, t_tokens **token, int nbr, t_shell *shell) {
     (*token)[i].pipe = nbr;
     (*token)[i].tokens = token_split(cmds[i], (*token)[i].nbr);
 
-    printf("command tokens %s:\n", *cmds);
+   /* printf("command tokens %s:\n", *cmds);
     while ((*token)[i].tokens[j])
     {
         printf("Token %d: %s\n", j, (*token)[i].tokens[j]);
         j++;
-    }
+    }*/
+   
     if (!(*token)[i].tokens) {
         ft_error("Token split failed\n", 1);
         return;
@@ -87,7 +88,7 @@ char **split_pipes(char *line)
 
 void tokenize_commands(char **cmdstr, t_list **commands_list, t_shell *shell)
 {
-    int i = 0;
+    int i;
     char **cmds;
     t_tokens *token;
     t_exec *exec_node;
@@ -95,10 +96,10 @@ void tokenize_commands(char **cmdstr, t_list **commands_list, t_shell *shell)
 
     cmds = split_pipes(*cmdstr);
     
-    printf("Commands divided by pipes:\n");
-    for (i = 0; cmds[i] != NULL; i++) {
-        printf("Commands %d: %s\n", i, cmds[i]);
-    }
+  //  printf("Commands divided by pipes:\n");
+  //  for (i = 0; cmds[i] != NULL; i++) {
+ //       printf("Commands %d: %s\n", i, cmds[i]);
+ //   }
     i = 0;
 
     while (cmds[i]) {

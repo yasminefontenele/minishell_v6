@@ -6,7 +6,7 @@
 /*   By: eliskam <eliskam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 11:47:09 by yfontene          #+#    #+#             */
-/*   Updated: 2024/09/27 10:43:37 by eliskam          ###   ########.fr       */
+/*   Updated: 2024/09/27 16:24:01 by eliskam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,9 @@ void tokenize_commands(char **cmdstr, t_list **commands_list, t_shell *shell)
             ft_error("Malloc failed for exec_node", 1);
             
         exec_node->args = malloc(sizeof(char *) * (count_token(cmds[i]) + 1));
+        exec_node->path = NULL;
+        exec_node->in = STDIN_FILENO;
+        exec_node->out = STDOUT_FILENO;
         if (!exec_node->args)
             ft_error("Malloc failed for exec_node->args", 1);
             

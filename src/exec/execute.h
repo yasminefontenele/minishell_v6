@@ -6,7 +6,7 @@
 /*   By: eliskam <eliskam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 14:57:57 by emencova          #+#    #+#             */
-/*   Updated: 2024/09/29 12:31:35 by eliskam          ###   ########.fr       */
+/*   Updated: 2024/09/29 13:28:28 by eliskam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,10 @@ int		error_unset(char *av);
 int		m_exit(t_shell *shell, t_list *cmd, int *leave);
 int 	find_key_idx(char **keys, char *key);
 int 	m_unset(t_shell *shell);
-int m_export(t_shell *shell);
+int		m_export(t_shell *shell);
 int 	m_env(t_shell *shell);
 int 	m_expr(char **args);
 int 	create_here_document_fd(char *input_buffer[2], char *delimiter[2]);
-int 	check_file_permissions(char *path, int is_write);
-int 	open_file(char *path, int is_write, int is_append) ;
 int 	ft_charstr(const char *str, char *set);
 int		second_strchr(char *str, int c);
 int		second_atoi(const char *str, long *n);
@@ -81,7 +79,6 @@ void	cmd_execute(t_shell *shell, t_list *cmd);
 void 	m_error(int error_type, char *limit, int status);
 void	ft_free(void *content);
 void	handle_process(t_shell *shell, t_list *cmd, int fd[2]);
-//int 	check_fork(t_shell *shell, t_list *cmd, int fd[2]);
 char	**dupl_form(char **f);
 char	**replace_form(char **big, char **small, int nbr);
 char	**extend_form(char **insd, char *nstr);
@@ -89,7 +86,6 @@ char	*get_next_line(int fd);
 char	**set_env(char *str, char *val, char **keys, int nbr);
 char	*get_env(char *name, char **env, int name_len);
 
-void	m_getpid(t_shell *piid);
 void	sigint_handler(int sig);
 void	ft_exec(char ***out, char *full, char *ags, char **env);
 int		open_fd(int fd, char *path, int is_output, int append);

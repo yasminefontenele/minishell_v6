@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   m_env_unset.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eliskam <eliskam@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yfontene <yfontene@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 15:15:49 by emencova          #+#    #+#             */
-/*   Updated: 2024/09/26 10:41:34 by eliskam          ###   ########.fr       */
+/*   Updated: 2024/09/27 13:44:04 by yfontene         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,9 +97,15 @@ int find_key_idx(char **keys,char *key)
 {
     int i;
     int key_len;
+    char *equal_sign;
     
-    key_len = ft_strchr(key, '=') - key;
     i = 0;
+    equal_sign = ft_strchr(key, '=');
+    if (equal_sign)
+        key_len = equal_sign - key;
+    else
+        key_len = ft_strlen(key);
+
     while (keys[i])
     {
         if (!ft_strncmp(keys[i], key, key_len) && keys[i][key_len] == '=')

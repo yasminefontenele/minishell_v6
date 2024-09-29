@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eliskam <eliskam@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yfontene <yfontene@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 14:57:57 by emencova          #+#    #+#             */
-/*   Updated: 2024/09/27 12:34:19 by eliskam          ###   ########.fr       */
+/*   Updated: 2024/09/28 10:55:14 by yfontene         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int		error_unset(char *av);
 int		m_exit(t_shell *shell, t_list *cmd, int *leave);
 int 	find_key_idx(char **keys, char *key);
 int 	m_unset(t_shell *shell);
-int		m_export(t_shell *shell);
+int m_export(t_shell *shell);
 int 	m_env(t_shell *shell);
 int 	m_expr(char **args);
 int 	create_here_document_fd(char *input_buffer[2], char *delimiter[2]);

@@ -6,7 +6,7 @@
 /*   By: yfontene <yfontene@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 15:48:35 by yasmine           #+#    #+#             */
-/*   Updated: 2024/09/09 14:36:30 by yfontene         ###   ########.fr       */
+/*   Updated: 2024/09/29 11:49:07 by yfontene         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int count_token(char *line)
     return (count);
 }
 
-char	*extract_substring(char const *s, unsigned int start, size_t len)
+/*char	*extract_substring(char const *s, unsigned int start, size_t len)
 {
 	char			*sub;
 	int				i;
@@ -85,4 +85,27 @@ char	*extract_substring(char const *s, unsigned int start, size_t len)
 	}
 	sub[i] = '\0';
 	return (sub);
+}*/
+
+char *extract_substring(char const *s, unsigned int start, size_t end)
+{
+    char *sub;
+    size_t i;
+    size_t substring_len;
+
+    substring_len = end - start;
+    if (start >= end || substring_len == 0)
+        return NULL;
+    sub = malloc(sizeof(char) * (substring_len + 1));
+    if (sub == NULL)
+        ft_error("malloc error in extract_substring", 1);
+    i = 0;
+    while(i < substring_len)
+    {
+        sub[i] = s[start + i];
+        i++;
+    }
+    sub[i] = '\0';
+    return (sub);
 }
+

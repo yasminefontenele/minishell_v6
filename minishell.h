@@ -6,7 +6,7 @@
 /*   By: yfontene <yfontene@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/14 19:48:13 by yasmine           #+#    #+#             */
-/*   Updated: 2024/09/26 21:16:56 by yfontene         ###   ########.fr       */
+/*   Updated: 2024/09/28 12:22:06 by yfontene         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,7 @@ typedef struct s_shell
 {
 	t_list	*cmds; // linked list of commands
 	char	**keys; // enviroment and keys
+	int nbr_keys;
 	pid_t	mpid; // main process id
 }		t_shell;
 typedef struct s_data
@@ -199,7 +200,7 @@ void    	arg_type(t_tokens *token, int oldsize, int newsize, int i);
 int			dollar_aux_config(t_tokens *token, int *i, t_data *data);
 char 		*dollar_config(char *str, int pos, t_shell *shell);
 int 		dollar_presence(char *str);
-char		*process_quotes(char *str, t_shell *shell);
+char 		*process_quotes(char *str, t_shell *shell);
 char		*quotes_expand(char *content, int i, t_shell *shell);
 t_tokens	process_quotes_tokens(t_tokens tokens, t_shell *shell);
 void		exec_process_quotes(t_tokens *tokens, t_shell *shell);

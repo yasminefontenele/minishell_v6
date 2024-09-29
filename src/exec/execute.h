@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yfontene <yfontene@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: eliskam <eliskam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 14:57:57 by emencova          #+#    #+#             */
-/*   Updated: 2024/09/28 10:55:14 by yfontene         ###   ########.fr       */
+/*   Updated: 2024/09/29 12:31:35 by eliskam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,5 +103,7 @@ void error_cd(char **args, char *target_dir);
 char *ft_strndup(char *src, int n);
 void execute_pipeline(t_shell *shell, t_list *commands_list);
 void command_get_pipeline(t_shell *shell, t_list *comnd);
+int handle_basic_builtins(t_shell *shell, char **args);
+int pipe_builtin(t_shell *shell, t_list *cmd_ls, int *exit, int len);
 
 #endif

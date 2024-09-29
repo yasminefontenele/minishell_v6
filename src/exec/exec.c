@@ -6,7 +6,7 @@
 /*   By: eliskam <eliskam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 22:31:57 by emencova          #+#    #+#             */
-/*   Updated: 2024/09/27 12:43:29 by eliskam          ###   ########.fr       */
+/*   Updated: 2024/09/29 12:42:28 by eliskam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,106 @@ void execute_pipeline(t_shell *shell, t_list *commands_list)
     }
 }
 */
+int pipe_builtin(t_shell *shell, t_list *cmd_ls, int *exit, int len)
+{
+    char **args;
+    int builtin_result;   
+    while (cmd_ls)
+    {
+        args = ((t_exec *)cmd_ls->content)->args;
+        len = ft_strlen(*args);
+        if (args && !ft_strncmp(args[0], "exit", 4) && len == 4)
+            return(g_env.exit_status = m_exit(shell, cmd_ls, exit));
+        else if (*args && !ft_strncmp(args[0], "cd", 2) && len == 2)
+            return(g_env.exit_status = m_cd(shell));
+        else if (!cmd_ls->next && args && !ft_strncmp(args[0], "export", 6))
+              return(g_env.exit_status = m_export(shell));
+        else if (!cmd_ls->next && args && (builtin_result = handle_basic_builtins(shell,args)) != -1)
+            return(g_env.exit_status = builtin_result);
+        cmd_ls = cmd_ls->next;
+        signal(SIGINT, SIG_IGN);
+        signal(SIGQUIT, SIG_IGN); 
+    }        
+    return g_env.exit_status;
+}
 
+void execute_pipeline(t_shell *shell, t_list *commands_list)
+{
+    int fd[2];
+    int prev_fd = -1;
+    t_list *cmd_node = commands_list;
+  //  t_exec *current_cmd;
+
+    while (cmd_node)
+    {
+       // current_cmd = (t_exec *)cmd_node->content;
+        
+        // Create a new pipe for each command, except for the last one
+        if (cmd_node->next)
+        {
+            if (pipe(fd) == -1)
+            {
+                perror("pipe");
+                exit(EXIT_FAILURE);
+            }
+        }
+
+        pid_t pid = fork();
+        if (pid == -1)
+        {
+            perror("fork");
+            exit(EXIT_FAILURE);
+        }
+
+        if (pid == 0) // Child process
+        {
+            // Handle input redirection from the previous command
+            if (prev_fd != -1)
+            {
+                if (dup2(prev_fd, STDIN_FILENO) == -1)
+                {
+                    perror("dup2");
+                    exit(EXIT_FAILURE);
+                }
+                close(prev_fd);
+            }
+
+            // Handle output redirection to the next command
+            if (cmd_node->next)
+            {
+                if (dup2(fd[1], STDOUT_FILENO) == -1)
+                {
+                    perror("dup2");
+                    exit(EXIT_FAILURE);
+                }
+                close(fd[1]);
+            }
+            close(fd[0]);
+
+            // Execute the command
+            command_get_pipeline(shell, cmd_node);
+            exit(EXIT_SUCCESS);
+        }
+        else // Parent process
+        {
+            // Close unused file descriptors in parent
+            if (prev_fd != -1)
+                close(prev_fd);
+            if (cmd_node->next)
+            {
+                close(fd[1]);
+                prev_fd = fd[0];
+            }
+        }
+        cmd_node = cmd_node->next;
+    }
+
+    // Wait for all child processes to complete
+    while (wait(NULL) > 0);
+}
+
+
+/*
 void execute_pipeline(t_shell *shell, t_list *commands_list)
 {
     int fd[2];
@@ -127,44 +226,6 @@ void execute_pipeline(t_shell *shell, t_list *commands_list)
     while (wait(NULL) > 0);
 }
 
-
-void handle_redirect(t_list *cmd_node, int pipes[2])
-{
-    t_exec *node;
-
-    node = cmd_node->content;
-    if (node->in != STDIN_FILENO)
-    {
-        if (dup2(node->in, STDIN_FILENO) == -1)
-        {
-            m_error(ERR_DUP, NULL, 1);
-            return;
-        }
-        close(node->in);
-    }
-    if (node->out != STDOUT_FILENO)
-    {
-        if (dup2(node->out, STDOUT_FILENO) == -1)
-        {
-            m_error(ERR_DUP, NULL, 1);
-            return;
-        }
-        close(node->out);
-    }
-    else if (cmd_node->next)
-    {
-        if (dup2(pipes[PIPE_WRITE], STDOUT_FILENO) == -1)
-        {
-            m_error(ERR_DUP, NULL, 1);
-            return;
-        }
-    }
-    if (cmd_node->next)
-        close(pipes[PIPE_READ]);
-}
-
-
-/*
 void handle_redirect(t_list *cmd_node, int pipes[2])
 {
     t_exec *node;

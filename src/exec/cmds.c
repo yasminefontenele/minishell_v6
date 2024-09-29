@@ -6,7 +6,7 @@
 /*   By: eliskam <eliskam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 16:34:30 by emencova          #+#    #+#             */
-/*   Updated: 2024/09/27 12:40:41 by eliskam          ###   ########.fr       */
+/*   Updated: 2024/09/29 12:48:01 by eliskam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -347,9 +347,38 @@ void command_get_pipeline(t_shell *shell, t_list *comnd)
     node = comnd->content;
     if (built_check(node))
     {
-        builtin(shell, comnd, &g_env.exit_status, ft_strlen(node->args[0]));
+        pipe_builtin(shell, comnd, &g_env.exit_status, ft_strlen(node->args[0]));
         return;
     }
+    if (node->path && access(node->path, X_OK) == 0)
+    {
+        // Then, check if it's a directory
+        directory = opendir(node->path);
+        if (directory)
+        {
+            // Close directory and print the "Is a directory" error
+            closedir(directory);
+            m_error(ERR_ISDIR, node->args[0], 126);
+            return;
+        }
+        
+        // If not a directory, attempt to execute the command
+        if (execve(node->path, node->args, shell->keys) == -1)
+        {
+            m_error(ERR_NEWCMD, node->args[0], 126);
+            exit(1);
+        }
+    }
+    else
+    {
+        // Handle the case where the command does not exist
+        m_error(ERR_NEWCMD, node->args[0], 127);
+    }
+    
+    // Clean up memory
+    free_form(&str);
+}
+    /*
     directory = check_cmd(shell, comnd, &str);
     if (directory)
     {
@@ -370,7 +399,7 @@ void command_get_pipeline(t_shell *shell, t_list *comnd)
     free_form(&str);
 }
 
-
+*/
 void cmd_execute(t_shell *shell, t_list *commands_list)
 {
      if (!commands_list)
